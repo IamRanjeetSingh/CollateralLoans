@@ -17,6 +17,6 @@ namespace CollateralLoanMVC.Services
 		/// </summary>
 		/// <param name="loanId"></param>
 		/// <returns>risk details for the loan or null if an error occurs or no loan found for the specified id</returns>
-		Risk Get(int loanId);
+		Task<Risk> Get(int loanId);
 	}
 }

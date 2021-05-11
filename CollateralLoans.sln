@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoanManagementApi", "LoanMa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomerManagementApi", "CustomerManagementApi\CustomerManagementApi.csproj", "{E2E20FCE-9DF6-4C76-ACEB-208C3186F59C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollateralLoanMVC", "CollateralLoanMVC\CollateralLoanMVC.csproj", "{541877D9-5124-4F16-A07B-BE7C84CCA856}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollateralLoanMVC", "CollateralLoanMVC\CollateralLoanMVC.csproj", "{541877D9-5124-4F16-A07B-BE7C84CCA856}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiskAssessmentApi", "RiskAssessmentApi\RiskAssessmentApi.csproj", "{2E39F0EF-CF2B-4BB2-B220-FD3EFE1661EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{541877D9-5124-4F16-A07B-BE7C84CCA856}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{541877D9-5124-4F16-A07B-BE7C84CCA856}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{541877D9-5124-4F16-A07B-BE7C84CCA856}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E39F0EF-CF2B-4BB2-B220-FD3EFE1661EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E39F0EF-CF2B-4BB2-B220-FD3EFE1661EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E39F0EF-CF2B-4BB2-B220-FD3EFE1661EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E39F0EF-CF2B-4BB2-B220-FD3EFE1661EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

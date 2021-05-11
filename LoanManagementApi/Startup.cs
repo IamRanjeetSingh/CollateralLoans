@@ -1,5 +1,6 @@
 using LoanManagementApi.DAL;
 using LoanManagementApi.DAL.DAO;
+using LoanManagementApi.DAL.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -40,8 +41,11 @@ namespace LoanManagementApi
 					Configuration.GetSection("LogSensitiveData").Get<bool>()
 				));
 
-			services.AddScoped<ICollateralDao>(serviceProvider =>
-				new CollateralDao(serviceProvider.GetService<IHttpClientFactory>(), new Uri(Configuration.GetValue<string>("CollateralSaveEndpoint")))
+			services.AddScoped<ICollateralManagement>(serviceProvider =>
+				new CollateralManagement(
+					serviceProvider.GetService<IHttpClientFactory>(),
+					Configuration.GetValue<string>("CollateralSaveEndpoint"),
+					serviceProvider.GetService<ILogger<CollateralManagement>>())
 				);
 			
 			services.AddSwaggerGen(options => options.SwaggerDoc("v1", new OpenApiInfo() { Title = "LoanManagementApi", Version = "v1" }));

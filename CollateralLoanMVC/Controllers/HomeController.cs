@@ -12,8 +12,7 @@ namespace CollateralLoanMVC.Controllers
 		[HttpGet("[action]")]
 		public ActionResult Index()
 		{
-			//TODO: Index action
-			throw new NotImplementedException();//remove this
+			return View();
 		}
 	}
 }

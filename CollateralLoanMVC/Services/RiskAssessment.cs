@@ -1,8 +1,11 @@
-﻿using CollateralLoanMVC.Models;
+﻿using CollateralLoanMVC.Exceptions;
+using CollateralLoanMVC.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace CollateralLoanMVC.Services
@@ -30,12 +33,22 @@ namespace CollateralLoanMVC.Services
 			_httpClientFactory = httpClientFactory;
 		}
 
-		public Risk Get(int loanId)
+		public async Task<Risk> Get(int loanId)
 		{
 			using (HttpClient client = _httpClientFactory.CreateClient())
 			{
-				//your code
-				throw new NotImplementedException();//remove this
+				HttpRequestMessage request = new HttpRequestMessage()
+				{
+					Method = HttpMethod.Get,
+					RequestUri = new Uri($"{_riskApiBaseUrl}/api/risk/{loanId}")
+				};
+				HttpResponseMessage response = await client.SendAsync(request);
+				if (response.StatusCode != HttpStatusCode.OK) throw new UnexpectedResponseException($"RiskManagementApi response: {response.StatusCode}");
+
+				JsonElement riskJson = JsonDocument.Parse(await response.Content.ReadAsStringAsync()).RootElement;
+				if (riskJson.ValueKind != JsonValueKind.Object) throw new UnexpectedResponseException($"RiskManagementApi response is not an Object");
+
+				return JsonSerializer.Deserialize<Risk>(riskJson.GetRawText(), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 			}
 		}
 	}

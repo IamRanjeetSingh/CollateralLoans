@@ -1,5 +1,6 @@
 ﻿using LoanManagementApi.DAL;
 using LoanManagementApi.DAL.DAO;
+using LoanManagementApi.DAL.Services;
 using LoanManagementApi.Extentions;
 using LoanManagementApi.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -17,13 +18,13 @@ namespace LoanManagementApi.Controllers
 	{
 		private ILogger<LoanController> _logger;
 		private ILoanDao _loanDao;
-		private ICollateralDao _collateralDao;
+		private ICollateralManagement _collateralManagement;
 
-		public LoanController(ILogger<LoanController> logger, ILoanDao dao, ICollateralDao collateralDao)
+		public LoanController(ILogger<LoanController> logger, ILoanDao dao, ICollateralManagement collateralDao)
 		{
 			_logger = logger;
 			_loanDao = dao;
-			_collateralDao = collateralDao;
+			_collateralManagement = collateralDao;
 		}
 
 		[HttpGet("")]
@@ -92,8 +93,9 @@ namespace LoanManagementApi.Controllers
 			if (collateralsJson.ValueKind != JsonValueKind.Array)
 				return BadRequest(new { error = "Invalid Collateral Array" });
 
-			HttpResponseMessage response = await _collateralDao.Save(collateralsJson);
-			return StatusCode((int)response.StatusCode);
+			HttpResponseMessage response = await _collateralManagement.Save(collateralsJson);
+			JsonElement responseBody = JsonDocument.Parse(await response.Content.ReadAsStringAsync()).RootElement;
+			return StatusCode((int)response.StatusCode, responseBody);
 		}
 	}
 }

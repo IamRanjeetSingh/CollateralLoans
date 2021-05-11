@@ -7,8 +7,10 @@ namespace CollateralLoanMVC.Models
 {
 	public class Risk
 	{
-		public int LoanValue { get; }
-		public int CollateralValue { get; }
-		public double RiskPercentage { get => ((double)LoanValue / CollateralValue) * 100; }
+		public double LoanValue { get; set; }
+		public double TotalCollateralValue { get; set; }
+		public double Raw { get => LoanValue - TotalCollateralValue; }
+		public double Percent { get => (LoanValue / TotalCollateralValue) * 100; }
+		public DateTime LastAssessDate { get; set; }
 	}
 }

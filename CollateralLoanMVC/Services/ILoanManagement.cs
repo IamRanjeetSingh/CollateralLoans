@@ -18,27 +18,27 @@ namespace CollateralLoanMVC.Services
 		/// <param name="page">details about the page</param>
 		/// <param name="filter">values to filter the loans upon</param>
 		/// <returns>list of loans</returns>
-		List<Loan> GetAll(Page page, LoanFilter filter);
+		Task<List<Loan>> GetAll(Page page, LoanFilter filter);
 
 		/// <summary>
 		/// Gets an individual <see cref="Loan"/> instance.
 		/// </summary>
 		/// <param name="loanId">id of the loan to be fetch</param>
 		/// <returns>loan associated with the given id or null if an error occurs or no loan found for the given id</returns>
-		Loan Get(int loanId);
+		Task<Loan> Get(int loanId);
 
 		/// <summary>
 		/// Saves the given <see cref="Loan"/> instance.
 		/// </summary>
 		/// <param name="loan">loan instance to be saved</param>
 		/// <returns>true if the loan was saved successfully, false otherwise</returns>
-		bool Save(Loan loan);
+		Task<bool> Save(Loan loan);
 
 		/// <summary>
 		/// Deletes the loan associated with the given id.
 		/// </summary>
 		/// <param name="loanId">id of the loan to be deleted</param>
 		/// <returns>true if the loan was deleted successfully, false otherwise</returns>
-		bool Delete(int loanId);
+		Task<bool> Delete(int loanId);
 	}
 }

@@ -4,6 +4,7 @@ using CollateralManagementApi.Extentions;
 using CollateralManagementApi.Models;
 using CollateralManagementApi.Util;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -16,10 +17,12 @@ namespace CollateralManagementApi.Controllers
 	public class CollateralController : ControllerBase
 	{
 		private ICollateralDao _dao;
+		private ILogger<CollateralController> _logger;
 
-		public CollateralController(ICollateralDao dao)
+		public CollateralController(ICollateralDao dao, ILogger<CollateralController> logger)
 		{
 			_dao = dao;
+			_logger = logger;
 		}
 
 		[HttpGet("")]
