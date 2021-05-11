@@ -46,5 +46,17 @@ namespace CollateralManagementApi.DAL.DAO
 		{
 			return db.Collaterals.SingleOrDefault(c => c.Id == id);
 		}
+
+		public int Save(Collateral collateral, CollateralDb db)
+		{
+			if (collateral == null)
+				return 0;
+
+			//verify collateral details
+
+			db.Collaterals.Add(collateral);
+			db.SaveChanges();
+			return collateral.Id;
+		}
 	}
 }

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace CollateralManagementApi.Controllers
 {
+	[ApiExplorerSettings(IgnoreApi = true)]
 	[ApiController]
 	[Route("api/[controller]")]
 	public class RealEstateController : ControllerBase

@@ -33,7 +33,7 @@ namespace LoanManagementApi.DAL
 			loanEntity.Property(l => l.Emi).IsRequired();
 			loanEntity.Property(l => l.SanctionDate).IsRequired();
 			loanEntity.Property(l => l.MaturityDate).IsRequired();
-			loanEntity.Ignore(l => l.Tenure);
+			//loanEntity.Ignore(l => l.Tenure);
 		}
 	}
 }

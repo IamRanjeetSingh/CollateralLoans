@@ -11,7 +11,10 @@ using System.Threading.Tasks;
 
 namespace CollateralManagementApi.Controllers
 {
+
+	[ApiExplorerSettings(IgnoreApi = true)]
 	[Route("api/[controller]")]
+	[ApiController]
 	public class LandController : ControllerBase
 	{
 		private ISubCollateralDao<Land> _dao;

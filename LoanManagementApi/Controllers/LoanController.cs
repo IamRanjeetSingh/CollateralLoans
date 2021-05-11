@@ -4,10 +4,9 @@ using LoanManagementApi.Extentions;
 using LoanManagementApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Threading;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace LoanManagementApi.Controllers
@@ -88,25 +87,13 @@ namespace LoanManagementApi.Controllers
 		}
 
 		[HttpPost("collateral")]
-		public async Task<IActionResult> SaveCollaterals([FromBody] List<dynamic> collaterals)
+		public async Task<IActionResult> SaveCollaterals([FromBody] JsonElement collateralsJson)
 		{
-			if (collaterals == null)
-				return StatusCode((int)HttpStatusCode.BadRequest, new { error = "cannot insert null entities" });
+			if (collateralsJson.ValueKind != JsonValueKind.Array)
+				return BadRequest(new { error = "Invalid Collateral Array" });
 
-			HttpResponseMessage response = await _collateralDao.Save(collaterals);
+			HttpResponseMessage response = await _collateralDao.Save(collateralsJson);
 			return StatusCode((int)response.StatusCode);
-		}
-
-		[HttpPost("mockcollateral")]
-		public Task<IActionResult> MockSaveCollaterals()
-		{
-			_logger.LogInformation("return mock collateral result");
-			Task<IActionResult> t = new Task<IActionResult>(() =>
-			{
-				return StatusCode((int)HttpStatusCode.OK);
-			});
-			t.Start();
-			return t;
 		}
 	}
 }

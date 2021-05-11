@@ -1,10 +1,10 @@
 ﻿using LoanManagementApi.Models;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,15 +21,12 @@ namespace LoanManagementApi.DAL.DAO
 			_collateralEndpoint = collateralEndpoint;
 		}
 
-		public Task<HttpResponseMessage> Save(List<dynamic> collaterals)
+		public Task<HttpResponseMessage> Save(JsonElement collaterals)
 		{
 			using (HttpClient client = _httpClientFactory.CreateClient())
 			{
-				HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, _collateralEndpoint)
-				{
-					Content = new StringContent(JsonConvert.SerializeObject(collaterals))
-				};
-				return client.SendAsync(request);
+				return Task.FromResult(new HttpResponseMessage() { StatusCode = HttpStatusCode.OK });//Dummy code
+
 			}
 		}
 	}

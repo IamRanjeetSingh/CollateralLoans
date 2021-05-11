@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LoanManagementApi.Models
 {
@@ -14,7 +15,8 @@ namespace LoanManagementApi.Models
 		public double Interest { get; set; }
 		public DateTime SanctionDate { get; set; }
 		public DateTime MaturityDate { get; set; }
-		public TimeSpan Tenure { get => MaturityDate - SanctionDate; }
+		//[NotMapped]
+		//public TimeSpan Tenure { get => MaturityDate - SanctionDate; }
 		public double Emi { get; set; }
 	}
 }

@@ -55,3 +55,8 @@ C:\Users\Dell\Visual Studio Workplace\CollateralLoans\LoanManagementApi\obj\Debu
 C:\Users\Dell\Visual Studio Workplace\CollateralLoans\LoanManagementApi\obj\Debug\net5.0\ref\LoanManagementApi.dll
 C:\Users\Dell\Visual Studio Workplace\CollateralLoans\LoanManagementApi\obj\Debug\net5.0\LoanManagementApi.pdb
 C:\Users\Dell\Visual Studio Workplace\CollateralLoans\LoanManagementApi\obj\Debug\net5.0\LoanManagementApi.genruntimeconfig.cache
+C:\Users\Dell\Visual Studio Workplace\CollateralLoans\LoanManagementApi\bin\Debug\net5.0\Microsoft.OpenApi.dll
+C:\Users\Dell\Visual Studio Workplace\CollateralLoans\LoanManagementApi\bin\Debug\net5.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\Dell\Visual Studio Workplace\CollateralLoans\LoanManagementApi\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\Dell\Visual Studio Workplace\CollateralLoans\LoanManagementApi\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\Dell\Visual Studio Workplace\CollateralLoans\LoanManagementApi\obj\Debug\net5.0\LoanManagementApi.MvcApplicationPartsAssemblyInfo.cs

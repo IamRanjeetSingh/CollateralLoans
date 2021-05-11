@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using System;
 using System.Net.Http;
 
@@ -42,6 +43,8 @@ namespace LoanManagementApi
 			services.AddScoped<ICollateralDao>(serviceProvider =>
 				new CollateralDao(serviceProvider.GetService<IHttpClientFactory>(), new Uri(Configuration.GetValue<string>("CollateralSaveEndpoint")))
 				);
+			
+			services.AddSwaggerGen(options => options.SwaggerDoc("v1", new OpenApiInfo() { Title = "LoanManagementApi", Version = "v1" }));
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -49,6 +52,8 @@ namespace LoanManagementApi
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
+				app.UseSwagger();
+				app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "LoanManagementApi"));
 			}
 
 			app.UseRouting();

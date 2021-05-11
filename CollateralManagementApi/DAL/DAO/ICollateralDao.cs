@@ -11,5 +11,7 @@ namespace CollateralManagementApi.DAL.DAO
 		List<Collateral> GetAll(CollateralDb db, Page page, Filter filter);
 
 		Collateral GetById(CollateralDb db, int id);
+
+		int Save(Collateral collateral, CollateralDb db);
 	}
 }
