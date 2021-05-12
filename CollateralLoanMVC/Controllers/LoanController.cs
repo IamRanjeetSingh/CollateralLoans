@@ -1,12 +1,13 @@
-﻿using CollateralLoanMVC.Util;
+﻿using CollateralLoanMVC.Exceptions;
 using CollateralLoanMVC.Models;
 using CollateralLoanMVC.Services;
+using CollateralLoanMVC.Util;
 using CollateralLoanMVC.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace CollateralLoanMVC.Controllers
 {
@@ -29,10 +30,11 @@ namespace CollateralLoanMVC.Controllers
 			_riskAssessment = riskAssessment;
 		}
 
+		//TODO: check integration
 		/// <summary>
-		/// Used to get the view for creating a new loan instance. 
+		/// Get the page for creating a new loan instance. 
 		/// </summary>
-		/// <returns>view for new loan</returns>
+		/// <returns>page for new loan</returns>
 		[HttpGet("[action]")]
 		public ActionResult New()
 		{
@@ -42,76 +44,58 @@ namespace CollateralLoanMVC.Controllers
 		//TODO: add post action method for creating new loan
 
 		/// <summary>
-		/// Used to get the view for viewing an individual loan in more detailed manner.
+		/// Get a page for viewing an individual loan in more detailed manner.
 		/// </summary>
-		/// <param name="loanId">Id of the loan to be viewed</param>
-		/// <returns>view for viewing an individual loan</returns>
+		/// <param name="loanId">id of the loan to be viewed</param>
+		/// <returns>page for viewing an individual loan</returns>
 		[HttpGet("{id}")]
 		public async Task<ActionResult> View(int id)
 		{
 			Task<Loan> loanTask = _loanManagement.Get(id);
 			Task<Risk> riskTask = _riskAssessment.Get(id);
-			await Task.WhenAll(loanTask, riskTask);
+
+			Loan loan;
+			Risk risk;
+
+			try { loan = await loanTask; }
+			catch (HttpRequestException) { return StatusCode((int)HttpStatusCode.ServiceUnavailable, new { error = "unable to connect with LoanManagementApi" }); }
+			catch (UnexpectedResponseException) { return StatusCode((int)HttpStatusCode.InternalServerError, new { error = "something went wrong in LoanManagementApi" }); }
+
+			try { risk = await riskTask; }
+			catch (HttpRequestException) { return StatusCode((int)HttpStatusCode.ServiceUnavailable, new { error = "unable to connect with RiskAssessmentApi" }); }
+			catch (UnexpectedResponseException) { return StatusCode((int)HttpStatusCode.InternalServerError, new { error = "something went wrong in RiskAssessmentApi" }); }
+
+			if (loan == null)
+				return NotFound();
 
 			return View(
 				new LoanViewModel()
 				{
-					Loan = await loanTask,
-					Risk = await riskTask
+					Loan = loan,
+					Risk = risk
 				}
 			);
 		}
 
 		/// <summary>
-		/// Used to get the list of loans to populate the index page.
+		/// Get a list of <see cref="Loan"/>, filtered and paginated.
 		/// </summary>
-		/// <param name="page"><see cref="Page"/> instance to get the list of loans in paginated format</param>
-		/// <param name="filter"><see cref="Filter"/> instance to filter the list of loans</param>
-		/// <returns></returns>
+		/// <param name="page">page details</param>
+		/// <param name="filter">filters to be applied</param>
+		/// <returns>list of <see cref="Loan"/></returns>
+		/// <response code="200">list of <see cref="Loan"/></response>
+		/// <response code="503">cannot communicate with LoanManagementApi</response>
+		/// <response code="500">something went wrong in LoanManagementApi</response>
 		[HttpGet("[action]")]
-		public async Task<List<Loan>> List([FromQuery] Page page, [FromQuery] LoanFilter filter)
+		public async Task<IActionResult> List([FromQuery] Page page, [FromQuery] LoanFilter filter)
 		{
-			return await _loanManagement.GetAll(page, filter);
-		}
+			List<Loan> loans;
 
+			try { loans = await _loanManagement.GetAll(page, filter); }
+			catch (HttpRequestException) { return StatusCode((int)HttpStatusCode.ServiceUnavailable, new { error = "LoanManagementApi unavailable" }); }
+			catch (UnexpectedResponseException) { return StatusCode((int)HttpStatusCode.InternalServerError, new { error = "something went wrong in LoanManagementApi" }); }
 
-		//TODO: remove this test action method
-		[HttpPost("")]
-		public async Task<IActionResult> Create()
-		{
-			if (await _loanManagement.Save(new Loan() { Id = 1007 }))
-				return Ok();
-			return StatusCode((int)HttpStatusCode.InternalServerError);
-		}
-
-		//TODO: remove this test action method
-		[HttpGet("")]
-		public async Task<IActionResult> Read([FromQuery] Page page, [FromQuery] LoanFilter filter)
-		{
-			return Ok(await _loanManagement.GetAll(page, filter));
-		}
-
-		//TODO: remove this test action method
-		[HttpGet("{id}")]
-		public async Task<IActionResult> ReadById(int id)
-		{
-			return Ok(await _loanManagement.Get(id));
-		}
-
-		//TODO: remove this test action method
-		[HttpGet("risk/{id}")]
-		public async Task<IActionResult> ReadRisk(int id)
-		{
-			return Ok(await _riskAssessment.Get(id));
-		}
-
-		//TODO: remove this test action method
-		[HttpDelete("{id}")]
-		public async Task<IActionResult> Delete(int id)
-		{
-			if (await _loanManagement.Delete(id))
-				return Ok();
-			return StatusCode((int)HttpStatusCode.InternalServerError);
+			return Ok(loans);
 		}
 	}
 }

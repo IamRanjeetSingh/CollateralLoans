@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "2PXdKvf/fiaHua5CE8n8iha0dZtN4zWwyP6HxJUiCaB4B6JF+cGqk7fIb+I231OU6ahd9Ff87murVs4nJtYJig==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Dell\\Visual Studio Workplace\\CollateralLoans\\AuthorizationApi\\AuthorizationApi.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Dell\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
+    "C:\\Users\\Dell\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\6.11.0\\microsoft.identitymodel.jsonwebtokens.6.11.0.nupkg.sha512",
+    "C:\\Users\\Dell\\.nuget\\packages\\microsoft.identitymodel.logging\\6.11.0\\microsoft.identitymodel.logging.6.11.0.nupkg.sha512",
+    "C:\\Users\\Dell\\.nuget\\packages\\microsoft.identitymodel.tokens\\6.11.0\\microsoft.identitymodel.tokens.6.11.0.nupkg.sha512",
+    "C:\\Users\\Dell\\.nuget\\packages\\system.identitymodel.tokens.jwt\\6.11.0\\system.identitymodel.tokens.jwt.6.11.0.nupkg.sha512",
+    "C:\\Users\\Dell\\.nuget\\packages\\system.security.cryptography.cng\\4.5.0\\system.security.cryptography.cng.4.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}

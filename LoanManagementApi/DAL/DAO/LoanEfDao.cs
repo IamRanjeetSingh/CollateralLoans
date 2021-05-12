@@ -20,14 +20,10 @@ namespace LoanManagementApi.DAL.DAO
 
 		public List<Loan> GetAll(Page page, Filter filter, LoanDb db)
 		{
-			if (IsDbContextNull(db))
-				return null;
+			page ??= new Page() { PageNo = 1, PageSize = 10 };
+			page.PageSize = page.PageSize <= 0 ? 10 : page.PageSize;
 
-			if (page == null || page.PageNo < 1 || page.PageSize < 1)
-			{
-				_logger.LogDebug(new ArgumentException($"Given page{JsonConvert.SerializeObject(page, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore })} details are invalid"), "Invalid Page Details");
-				return null;
-			}
+			if (db == null) throw new ArgumentNullException($"{typeof(LoanDb).FullName} parameter shouldn't be null");
 
 			IQueryable<Loan> query = db.Loans.AsQueryable();
 
@@ -59,6 +55,14 @@ namespace LoanManagementApi.DAL.DAO
 					query = query.Where(l => l.MaturityDate <= filter.MaturityBefore);
 			}
 
+			if ((page.PageNo - 1) * page.PageSize >= query.Count())
+			{
+				int totalRows = query.Count();
+				page.PageNo = totalRows / page.PageSize;
+				if (totalRows % page.PageSize != 0 || page.PageNo == 0)
+					page.PageNo++;
+			}
+
 			query = query.Skip((page.PageNo - 1) * page.PageSize).Take(page.PageSize);
 
 			return query.ToList();
@@ -66,21 +70,9 @@ namespace LoanManagementApi.DAL.DAO
 
 		public Loan GetById(int id, LoanDb db)
 		{
-			if (IsDbContextNull(db))
-				return null;
+			if (db == null) throw new ArgumentNullException($"{typeof(LoanDb).FullName} parameter shouldn't be null");
 
-			try
-			{
-				Loan loan = db.Loans.SingleOrDefault(l => l.Id == id);
-				if (loan == null)
-					_logger.LogDebug($"No loan found for id: {id}");
-				return loan;
-			}
-			catch (Exception e)
-			{
-				_logger.LogError(e, $"Error occurred while getting loan by id{(_logSensitiveData ? "{" + id + "}" : "")}");
-				return null;
-			}
+			return db.Loans.SingleOrDefault(l => l.Id == id);
 		}
 
 		public int Save(Loan loan, LoanDb db)

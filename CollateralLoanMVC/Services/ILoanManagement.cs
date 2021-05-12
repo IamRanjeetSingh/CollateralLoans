@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Net.Http;
+using CollateralLoanMVC.Exceptions;
 
 namespace CollateralLoanMVC.Services
 {
@@ -13,18 +15,22 @@ namespace CollateralLoanMVC.Services
 	public interface ILoanManagement
 	{
 		/// <summary>
-		/// Gets a list of <see cref="Loan"/> filtered and paginated.
+		/// Get a list of <see cref="Loan"/>, filtered and paginated.
 		/// </summary>
 		/// <param name="page">details about the page</param>
 		/// <param name="filter">values to filter the loans upon</param>
-		/// <returns>list of loans</returns>
+		/// <returns>list of <see cref="Loan"/></returns>
+		/// <exception cref="HttpRequestException">cannot communicate with LoanManagementApi</exception>
+		/// <exception cref="UnexpectedResponseException">unexpected response from LoanManagementApi</exception>
 		Task<List<Loan>> GetAll(Page page, LoanFilter filter);
 
 		/// <summary>
-		/// Gets an individual <see cref="Loan"/> instance.
+		/// Get an individual <see cref="Loan"/> instance.
 		/// </summary>
-		/// <param name="loanId">id of the loan to be fetch</param>
+		/// <param name="loanId">id of the loan to be fetched</param>
 		/// <returns>loan associated with the given id or null if an error occurs or no loan found for the given id</returns>
+		/// <exception cref="HttpRequestException">cannot communicate with LoanManagementApi</exception>
+		/// <exception cref="UnexpectedResponseException">unexpected response from LoanManagementApi</exception>
 		Task<Loan> Get(int loanId);
 
 		/// <summary>

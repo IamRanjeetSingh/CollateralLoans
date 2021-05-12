@@ -5,6 +5,7 @@ using LoanManagementApi.Extentions;
 using LoanManagementApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
@@ -27,21 +28,38 @@ namespace LoanManagementApi.Controllers
 			_collateralManagement = collateralDao;
 		}
 
+		/// <summary>
+		/// Get a list of <see cref="Loan"/>, filtered and paginated.
+		/// </summary>
+		/// <param name="page">page details</param>
+		/// <param name="filter">filters to be applied</param>
+		/// <param name="db">data source to be searched</param>
+		/// <returns>list of <see cref="Loan"/></returns>
+		/// <response code="200">list of <see cref="Loan"/></response>
 		[HttpGet("")]
 		public IActionResult GetAll([FromQuery] Page page, [FromQuery] Filter filter, [FromServices] LoanDb db)
 		{
-			if (page == null || page.PageNo < 1 || page.PageSize < 1)
-				return StatusCode((int)HttpStatusCode.BadRequest, new { error = "invalid page details" });
-
 			return Ok(_loanDao.GetAll(page, filter, db));
 		}
 
+		/// <summary>
+		/// Get a single <see cref="Loan"/> instance associated with the given id.
+		/// </summary>
+		/// <param name="id">id of the loan to be fetched</param>
+		/// <param name="db">data source to be searched</param>
+		/// <returns>single loan instance associated with the given id</returns>
+		/// <response code="200">single loan instance associated with the given id</response>
+		/// <response code="404">no loan found for the given id</response>
+		/// <response code="500">more than one loan found for the given id</response>
 		[HttpGet("{id}")]
 		public IActionResult GetById(int id, [FromServices] LoanDb db)
 		{
-			Loan loan = _loanDao.GetById(id, db);
-			if (loan == null)
-				return StatusCode((int)HttpStatusCode.NotFound, new { error = $"no entity found by id: {id}" });
+			Loan loan;
+			try { loan = _loanDao.GetById(id, db); }
+			catch (InvalidOperationException) { return StatusCode((int)HttpStatusCode.InternalServerError, new { error = "more than one loan found for the given id" }); }
+			
+			if (loan == null) 
+				return NotFound( new { error = $"no loan found by id: {id}" });
 			return Ok(loan);
 		}
 
@@ -52,8 +70,6 @@ namespace LoanManagementApi.Controllers
 				return StatusCode((int)HttpStatusCode.BadRequest, new { error = "cannot store null entity" });
 
 			int rowId = _loanDao.Save(loan, db);
-			if (rowId == 0)
-				return StatusCode((int)HttpStatusCode.InternalServerError, new { error = "error occurred while saving loan" });
 			return CreatedAtAction(nameof(LoanController.GetById), nameof(LoanController).RemoveSuffix("Controller"), new { id = rowId }, loan);
 		}
 
@@ -63,28 +79,22 @@ namespace LoanManagementApi.Controllers
 			if (loan == null)
 				return StatusCode((int)HttpStatusCode.BadRequest, new { error = "cannot update with null entity" });
 
-			int rowsAfected = _loanDao.UpdateFull(id, loan, db);
-			if (rowsAfected <= 0)
-				return StatusCode((int)HttpStatusCode.InternalServerError, new { error = "error occurred while fully updaing loan" });
-			return Ok();
+			int rowsAffected = _loanDao.UpdateFull(id, loan, db);
+			return Ok(new { rowsaffected = rowsAffected });
 		}
 
 		[HttpPatch("{id}")]
 		public IActionResult UpdatePartial(int id, [FromBody] dynamic loan, [FromServices] LoanDb db)
 		{
 			int rowsAffected = _loanDao.UpdatePartial(id, loan, db);
-			if (rowsAffected <= 0)
-				return StatusCode((int)HttpStatusCode.InternalServerError, new { error = "error occurred while partially updating loan" });
-			return Ok();
+			return Ok(new { rowsaffected = rowsAffected });
 		}
 
 		[HttpDelete("{id}")]
 		public IActionResult Delete(int id, [FromServices] LoanDb db)
 		{
 			int rowsAffected = _loanDao.Delete(id, db);
-			if (rowsAffected <= 0)
-				return StatusCode((int)HttpStatusCode.InternalServerError, new { error = "error occurred while deleting loan" });
-			return Ok();
+			return Ok(new { rowsaffected = rowsAffected });
 		}
 
 		[HttpPost("collateral")]
@@ -93,9 +103,31 @@ namespace LoanManagementApi.Controllers
 			if (collateralsJson.ValueKind != JsonValueKind.Array)
 				return BadRequest(new { error = "Invalid Collateral Array" });
 
-			HttpResponseMessage response = await _collateralManagement.Save(collateralsJson);
+			HttpResponseMessage response;
+			try { response = await _collateralManagement.Save(collateralsJson); }
+			catch (HttpRequestException) { return StatusCode((int) HttpStatusCode.ServiceUnavailable); }
+
+			if (response.StatusCode != HttpStatusCode.OK) 
+				return StatusCode((int)response.StatusCode);
+
 			JsonElement responseBody = JsonDocument.Parse(await response.Content.ReadAsStringAsync()).RootElement;
-			return StatusCode((int)response.StatusCode, responseBody);
+			return Ok(responseBody);
+		}
+
+
+		//TODO: Remove this debug method
+		[HttpGet("Test")]
+		public IActionResult Test()
+		{
+			throw new System.Exception();
+		}
+
+		//TODO: Remove this debug method
+		[HttpPost("[action]")]
+		public IActionResult Seed([FromServices] LoanDb db)
+		{
+			db.Seed();
+			return Ok();
 		}
 	}
 }

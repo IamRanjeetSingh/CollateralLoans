@@ -14,7 +14,7 @@ namespace CollateralLoanMVC.Models
 		public double Interest { get; set; }
 		public DateTime SanctionDate { get; set; }
 		public DateTime MaturityDate { get; set; }
-		public TimeSpan Tenure { get => MaturityDate - SanctionDate; }
+		//public TimeSpan Tenure { get => MaturityDate - SanctionDate; }//TODO: remove this
 		public double Emi { get; set; }
 	}
 }

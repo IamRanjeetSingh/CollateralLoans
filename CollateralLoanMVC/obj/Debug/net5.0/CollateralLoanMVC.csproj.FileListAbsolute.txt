@@ -37,3 +37,5 @@ C:\Users\Dell\Visual Studio Workplace\CollateralLoans\CollateralLoanMVC\obj\Debu
 C:\Users\Dell\Visual Studio Workplace\CollateralLoans\CollateralLoanMVC\obj\Debug\net5.0\CollateralLoanMVC.pdb
 C:\Users\Dell\Visual Studio Workplace\CollateralLoans\CollateralLoanMVC\obj\Debug\net5.0\CollateralLoanMVC.genruntimeconfig.cache
 C:\Users\Dell\Visual Studio Workplace\CollateralLoans\CollateralLoanMVC\obj\Debug\net5.0\CollateralLoanMVC.csproj.CopyComplete
+C:\Users\Dell\Visual Studio Workplace\CollateralLoans\CollateralLoanMvc\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
+C:\Users\Dell\Visual Studio Workplace\CollateralLoans\CollateralLoanMvc\obj\Debug\net5.0\Razor\Views\Loan\New.cshtml.g.cs

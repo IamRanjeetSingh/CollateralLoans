@@ -1,0 +1,47 @@
+﻿<h3>Loans</h3>
+<table id="loan-table" class="table table-striped table-hover">
+	<thead class="thead-dark">
+		<tr>
+			<th scope="col">Id</th>
+			<th scope="col">Customer Id</th>
+			<th scope="col">Type</th>
+			<th scope="col">Sanction</th>
+			<th scope="col">Maturity</th>
+			<th scope="col">Principal</th>
+			<th scope="col">Interest</th>
+			<th scope="col">Emi</th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+</table>
+
+@section Scripts {
+	<script>
+		$(document).ready(function () {
+			$.ajax({
+				type: 'GET',
+				url: 'https://localhost:9001/loan/list',
+				success: function (data) {
+					for (let index = 0; index < data.length; index++)
+						addNewRow(data[index]);
+				}
+			});
+		});
+
+		function addNewRow(loan) {
+			let newRow =
+				"<tr>" +
+				"<th scope=\"row\">" + loan.id + "</th>" +
+				"<td>" + loan.customerId + "</td>" +
+				"<td>" + loan.type + "</td>" +
+				"<td>" + new Date(loan.sanctionDate).toLocaleDateString() + "</td>" +
+				"<td>" + new Date(loan.maturityDate).toLocaleDateString() + "</td>" +
+				"<td>" + loan.principal + "</td>" +
+				"<td>" + loan.interest + "</td>" +
+				"<td>" + loan.emi + "</td>" +
+				"</tr>";
+			$("#loan-table tbody").append(newRow);
+		}
+	</script>
+}

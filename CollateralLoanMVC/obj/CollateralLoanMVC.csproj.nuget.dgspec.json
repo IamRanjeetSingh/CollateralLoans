@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Dell\\Visual Studio Workplace\\CollateralLoans\\CollateralLoanMvc\\CollateralLoanMVC.csproj": {}
+    "C:\\Users\\Dell\\Visual Studio Workplace\\CollateralLoans\\CollateralLoanMVC\\CollateralLoanMVC.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Dell\\Visual Studio Workplace\\CollateralLoans\\CollateralLoanMvc\\CollateralLoanMVC.csproj": {
+    "C:\\Users\\Dell\\Visual Studio Workplace\\CollateralLoans\\CollateralLoanMVC\\CollateralLoanMVC.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Dell\\Visual Studio Workplace\\CollateralLoans\\CollateralLoanMvc\\CollateralLoanMVC.csproj",
+        "projectUniqueName": "C:\\Users\\Dell\\Visual Studio Workplace\\CollateralLoans\\CollateralLoanMVC\\CollateralLoanMVC.csproj",
         "projectName": "CollateralLoanMVC",
-        "projectPath": "C:\\Users\\Dell\\Visual Studio Workplace\\CollateralLoans\\CollateralLoanMvc\\CollateralLoanMVC.csproj",
+        "projectPath": "C:\\Users\\Dell\\Visual Studio Workplace\\CollateralLoans\\CollateralLoanMVC\\CollateralLoanMVC.csproj",
         "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Dell\\Visual Studio Workplace\\CollateralLoans\\CollateralLoanMvc\\obj\\",
+        "outputPath": "C:\\Users\\Dell\\Visual Studio Workplace\\CollateralLoans\\CollateralLoanMVC\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",

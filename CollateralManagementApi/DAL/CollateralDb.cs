@@ -98,7 +98,7 @@ namespace CollateralManagementApi.DAL
 			Collaterals.Add(
 				new RealEstate()
 				{
-					Id = 1004,
+					Id = 3004,
 					LoanId = 1003,
 					CustomerId = 2002,
 					InitialAssesDate = DateTime.Now.AddDays(-8),

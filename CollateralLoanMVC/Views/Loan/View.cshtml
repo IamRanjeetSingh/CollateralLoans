@@ -1,5 +1,62 @@
-﻿@model Loan
-@Model.Id
-<br />
-@Model.CustomerId
-<br />
+﻿@model CollateralLoanMVC.ViewModels.LoanViewModel
+<h3>Loan Details</h3>
+<div>
+	<label for="loan_id" class="col-form-label">Id</label>
+	<input id="loan_id" type="text" class="form-control" value=@Model.Loan.Id disabled>
+</div>
+<div>
+	<label for="loan_customerId" class="col-form-label">Customer Id</label>
+	<input id="loan_customerId" type="text" class="form-control" value=@Model.Loan.CustomerId disabled>
+</div>
+<div>
+	<label for="loan_type" class="col-form-label">Type</label>
+	<input id="loan_type" type="text" class="form-control" value=@Model.Loan.Type disabled>
+</div>
+<div>
+	<label for="loan_sanction" class="col-form-label">Sanction Date</label>
+	<input id="loan_sanction" type="text" class="form-control" value=@Model.Loan.SanctionDate.ToLongDateString() disabled>
+</div>
+<div>
+	<label for="loan_maturity" class="col-form-label">Maturity Date</label>
+	<input id="loan_maturity" type="text" class="form-control" value=@Model.Loan.MaturityDate.ToLongDateString() disabled>
+</div>
+<div>
+	<label for="loan_principal" class="col-form-label">Principal</label>
+	<input id="loan_principal" type="text" class="form-control" value=@Model.Loan.Principal disabled>
+</div>
+<div>
+	<label for="loan_interest" class="col-form-label">Interest</label>
+	<input id="loan_interest" type="text" class="form-control" value=@Model.Loan.Interest disabled>
+</div>
+<div>
+	<label for="loan_emi" class="col-form-label">Emi</label>
+	<input id="loan_emi" type="text" class="form-control" value=@Model.Loan.Emi disabled>
+</div>
+<h3>Risk Details</h3>
+@if (@Model.Risk != null)
+{
+	<div>
+		<label for="risk_loanValue" class="col-form-label">Loan Value</label>
+		<input id="risk_loanValue" type="text" class="form-control" value=@Model.Risk.LoanValue disabled>
+	</div>
+	<div>
+		<label for="risk_totalCollateralValue" class="col-form-label">Total Collateral Value</label>
+		<input id="risk_totalCollateralValue" type="text" class="form-control" value=@Model.Risk.TotalCollateralValue disabled>
+	</div>
+	<div>
+		<label for="risk_percent" class="col-form-label">Percent</label>
+		<input id="risk_percent" type="text" class="form-control" value=@Model.Risk.Percent disabled>
+	</div>
+	<div>
+		<label for="risk_raw" class="col-form-label">Raw</label>
+		<input id="risk_raw" type="text" class="form-control" value=@Model.Risk.Raw disabled>
+	</div>
+	<div>
+		<label for="risk_lastAssessDate" class="col-form-label">Last Assess Date</label>
+		<input id="risk_lastAssessDate" type="text" class="form-control" value=@Model.Risk.LastAssessDate disabled>
+	</div>
+}
+else
+{
+	<p><b>No Risk Details Available</b></p>
+}

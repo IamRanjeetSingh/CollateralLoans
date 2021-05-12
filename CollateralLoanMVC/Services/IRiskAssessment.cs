@@ -1,8 +1,6 @@
-﻿using CollateralLoanMVC.Models;
-using CollateralLoanMVC.Util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using CollateralLoanMVC.Exceptions;
+using CollateralLoanMVC.Models;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace CollateralLoanMVC.Services
@@ -17,6 +15,8 @@ namespace CollateralLoanMVC.Services
 		/// </summary>
 		/// <param name="loanId"></param>
 		/// <returns>risk details for the loan or null if an error occurs or no loan found for the specified id</returns>
+		/// <exception cref="HttpRequestException">unable to connect with RiskAssessmentApi</exception>
+		/// <exception cref="UnexpectedResponseException">unexpected response from RiskAssessmentApi</exception>
 		Task<Risk> Get(int loanId);
 	}
 }

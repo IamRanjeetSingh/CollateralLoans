@@ -27,7 +27,6 @@ namespace LoanManagementApi.DAL.Services
 		{
 			using (HttpClient client = _httpClientFactory.CreateClient())
 			{
-				//return Task.FromResult(new HttpResponseMessage() { StatusCode = HttpStatusCode.OK });//Dummy code
 				HttpRequestMessage request = new HttpRequestMessage()
 				{
 					Method = HttpMethod.Post,

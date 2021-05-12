@@ -21,3 +21,9 @@ C:\Users\Dell\Visual Studio Workplace\CollateralLoans\RiskAssessmentApi\obj\Debu
 C:\Users\Dell\Visual Studio Workplace\CollateralLoans\RiskAssessmentApi\obj\Debug\net5.0\ref\RiskAssessmentApi.dll
 C:\Users\Dell\Visual Studio Workplace\CollateralLoans\RiskAssessmentApi\obj\Debug\net5.0\RiskAssessmentApi.pdb
 C:\Users\Dell\Visual Studio Workplace\CollateralLoans\RiskAssessmentApi\obj\Debug\net5.0\RiskAssessmentApi.genruntimeconfig.cache
+C:\Users\Dell\Visual Studio Workplace\CollateralLoans\RiskAssessmentAPi\bin\Debug\net5.0\Microsoft.OpenApi.dll
+C:\Users\Dell\Visual Studio Workplace\CollateralLoans\RiskAssessmentAPi\bin\Debug\net5.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Users\Dell\Visual Studio Workplace\CollateralLoans\RiskAssessmentAPi\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Users\Dell\Visual Studio Workplace\CollateralLoans\RiskAssessmentAPi\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\Dell\Visual Studio Workplace\CollateralLoans\RiskAssessmentAPi\obj\Debug\net5.0\RiskAssessmentApi.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Dell\Visual Studio Workplace\CollateralLoans\RiskAssessmentAPi\obj\Debug\net5.0\RiskAssessmentApi.csproj.CopyComplete

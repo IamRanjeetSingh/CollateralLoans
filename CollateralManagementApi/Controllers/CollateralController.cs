@@ -25,13 +25,18 @@ namespace CollateralManagementApi.Controllers
 			_logger = logger;
 		}
 
+		/// <summary>
+		/// Get a list of <see cref="Collateral"/>, paginated and filtered.
+		/// </summary>
+		/// <param name="page">page details</param>
+		/// <param name="filter">value to filter the list upon</param>
+		/// <param name="db">data source to be searched</param>
+		/// <returns>list of <see cref="Collateral"/>. This list can be empty</returns>
+		/// <response code="200">list of <see cref="Collateral"/></response>
 		[HttpGet("")]
 		public IActionResult Get([FromQuery] Page page, [FromQuery] Filter filter, [FromServices] CollateralDb db)
 		{
-			if (page == null || page.PageNo < 1 || page.PageSize < 1)
-				return StatusCode((int)HttpStatusCode.BadRequest, new { error = "invalid page details" });
-
-			return Ok(_dao.GetAll(db, page, filter));
+			return Ok(_dao.GetAll(page, filter, db));
 		}
 
 		[HttpGet("{id}")]
@@ -39,7 +44,8 @@ namespace CollateralManagementApi.Controllers
 		{
 			Collateral collateral = _dao.GetById(db, id);
 			if (collateral == null)
-				return StatusCode((int)HttpStatusCode.NotFound, new { error = $"no entity found by id: {id}" });
+				return StatusCode((int)HttpStatusCode.NotFound, new { error = $"no collateral found by id: {id}" });
+
 			return Ok(collateral);
 		}
 
@@ -51,8 +57,6 @@ namespace CollateralManagementApi.Controllers
 			catch (ArgumentException e) { return BadRequest(new { error =  e.Message }); }
 
 			int rowId = _dao.Save(collateral, db);
-			if (rowId <= 0)
-				return StatusCode((int)HttpStatusCode.InternalServerError, new { error = "error occurred while saving the collateral" });
 			return CreatedAtAction(nameof(CollateralController.GetById), nameof(CollateralController).RemoveSuffix("Controller"), new { id = rowId }, collateral);
 		}
 
@@ -60,7 +64,7 @@ namespace CollateralManagementApi.Controllers
 		public IActionResult SaveMultiple([FromBody] JsonElement collateralsJson, [FromServices] CollateralDb db)
 		{
 			if (collateralsJson.ValueKind != JsonValueKind.Array)
-				return BadRequest(new { error = "Invalid Collateral Array" });
+				return BadRequest(new { error = "provided content is not a collateral array" });
 
 			List<int> statusCodes = new List<int>();
 			for(int index = 0, length = collateralsJson.GetArrayLength(); index < length; index++)

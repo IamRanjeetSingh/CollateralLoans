@@ -1,8 +1,6 @@
 ﻿using CollateralLoanMVC.Exceptions;
 using CollateralLoanMVC.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
@@ -22,8 +20,8 @@ namespace CollateralLoanMVC.Services
 		private readonly string _riskApiBaseUrl;
 
 		/// <summary>
-		/// Used to instantiate a new <see cref="HttpClient"/> instance rather than creating it directly. It helps in avoiding resource management 
-		/// socket exhaustion.
+		/// Use this factory class to instantiate <see cref="HttpClient"/> instances rather than creating them explicitly. 
+		/// It helps in avoiding resource management related issues.
 		/// </summary>
 		private IHttpClientFactory _httpClientFactory;
 
@@ -43,6 +41,8 @@ namespace CollateralLoanMVC.Services
 					RequestUri = new Uri($"{_riskApiBaseUrl}/api/risk/{loanId}")
 				};
 				HttpResponseMessage response = await client.SendAsync(request);
+
+				if (response.StatusCode == HttpStatusCode.NotFound) return null;
 				if (response.StatusCode != HttpStatusCode.OK) throw new UnexpectedResponseException($"RiskManagementApi response: {response.StatusCode}");
 
 				JsonElement riskJson = JsonDocument.Parse(await response.Content.ReadAsStringAsync()).RootElement;

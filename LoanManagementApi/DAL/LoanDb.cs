@@ -35,5 +35,62 @@ namespace LoanManagementApi.DAL
 			loanEntity.Property(l => l.MaturityDate).IsRequired();
 			//loanEntity.Ignore(l => l.Tenure);
 		}
+
+		public void Seed()
+		{
+			Loans.Add(
+				new Loan()
+				{
+					Id = 1001,
+					CustomerId = 2001,
+					Type = LoanType.Home,
+					Principal = 10_00_000,
+					Interest = 0.07,
+					Emi = 10_000,
+					SanctionDate = DateTime.Now.AddDays(-5),
+					MaturityDate = DateTime.Now.AddYears(10)
+				}
+			);
+			Loans.Add(
+				new Loan()
+				{
+					Id = 1002,
+					CustomerId = 2001,
+					Type = LoanType.Vehicle,
+					Principal = 10_00_000,
+					Interest = 0.07,
+					Emi = 10_000,
+					SanctionDate = DateTime.Now.AddDays(-5),
+					MaturityDate = DateTime.Now.AddYears(10)
+				}
+			);
+			Loans.Add(
+				new Loan()
+				{
+					Id = 1003,
+					CustomerId = 2002,
+					Type = LoanType.Home,
+					Principal = 10_00_000,
+					Interest = 0.07,
+					Emi = 10_000,
+					SanctionDate = DateTime.Now.AddDays(-5),
+					MaturityDate = DateTime.Now.AddYears(10)
+				}
+			);
+			Loans.Add(
+				new Loan()
+				{
+					Id = 1004,
+					CustomerId = 2002,
+					Type = LoanType.Vehicle,
+					Principal = 10_00_000,
+					Interest = 0.07,
+					Emi = 10_000,
+					SanctionDate = DateTime.Now.AddDays(-5),
+					MaturityDate = DateTime.Now.AddYears(10)
+				}
+			);
+			SaveChanges();
+		}
 	}
 }
