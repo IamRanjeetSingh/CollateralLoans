@@ -11,7 +11,7 @@ namespace AuthorizationApi.Controllers
 	/// <summary>
 	/// Responsible for authenticating user credentials and generating jwt token for them.
 	/// </summary>
-	[Route("[controller]")]
+	[Route("api/[controller]")]
 	[ApiController]
 	public class AuthController : ControllerBase
 	{
@@ -31,10 +31,12 @@ namespace AuthorizationApi.Controllers
 		/// <param name="request">wrapper around necessary information for authentication</param>
 		/// <returns><see cref="AuthenticationResponse"/> instance containing the authentication result</returns>
 		/// <response code="200">authentication request is successfully processed</response>
+		/// <response code="400">authentication request is invalid, either request is null or userid or password is null or empty</response>
 		[HttpPost("")]
 		public async Task<IActionResult> Authenticate([FromBody] AuthenticationRequest request)
 		{
-			return Ok(await _authHandler.AuthenticateAsync(request));
+			try { return Ok(await _authHandler.AuthenticateAsync(request)); }
+			catch (ArgumentException) { return BadRequest(new { error = "invalid authentication request" }); }
 		}
 	}
 }

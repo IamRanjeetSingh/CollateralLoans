@@ -1,22 +1,20 @@
 ﻿using AuthorizationApi.DTO;
+using AuthorizationApi.Exceptions;
 using AuthorizationApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AuthorizationApi.Controllers
 {
-	[Route("[controller]")]
+	[Route("api/[controller]")]
 	[ApiController]
 	public class TokenController : ControllerBase
 	{
-		private ITokenValidationHandler _tokenValidationHandler;
+		private ITokenManager _tokenManager;
 
-		public TokenController(ITokenValidationHandler tokenValidationHandler)
+		public TokenController(ITokenManager tokenManager)
 		{
-			_tokenValidationHandler = tokenValidationHandler;
+			_tokenManager = tokenManager;
 		}
 
 		/// <summary>
@@ -25,10 +23,13 @@ namespace AuthorizationApi.Controllers
 		/// <param name="request">wrapper around necessary information for token validation</param>
 		/// <returns><see cref="TokenValidationResponse"/> instance containing the token validation result</returns>
 		/// <response code="200">token validation request is processed successfully</response>
-		[HttpPost("[action]")]
-		public IActionResult Validate(TokenValidationRequest request)
+		/// <response code="400">invalid token validation request</response>
+		[HttpPost("")]
+		public IActionResult Validate([FromBody] TokenValidationRequest request)
 		{
-			return Ok(_tokenValidationHandler.Validate(request));
+			try { return Ok(_tokenManager.HandleValidationRequest(request)); }
+			catch (Exception e) when (e is ArgumentException || e is InvalidTokenException || e is UnauthenticTokenException)
+			{ return BadRequest(new { error = "invalid token validation request" }); }
 		}
 	}
 }

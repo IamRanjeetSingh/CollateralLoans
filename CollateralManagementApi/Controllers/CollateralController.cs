@@ -82,7 +82,7 @@ namespace CollateralManagementApi.Controllers
 			return StatusCode((int)HttpStatusCode.MultiStatus, new { statuses = statusCodes });
 		}
 
-		//(DEBUG) Used to populate the database with seed data.
+		//TODO: Remove this debug method
 		[HttpPost("[action]")]
 		public IActionResult Seed([FromServices] CollateralDb db)
 		{

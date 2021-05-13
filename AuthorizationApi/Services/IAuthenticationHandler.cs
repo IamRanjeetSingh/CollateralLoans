@@ -16,6 +16,7 @@ namespace AuthorizationApi.Services
 		/// </summary>
 		/// <param name="request">request containing necessary information for authentication</param>
 		/// <returns><see cref="AuthenticationResponse"/> representing the authentication result</returns>
+		/// <exception cref="ArgumentException">either request is null or userId or password is null or empty</exception>
 		Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request);
 	}
 }

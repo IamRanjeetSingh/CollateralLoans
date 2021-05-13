@@ -3,13 +3,10 @@ using LoanManagementApi.DAL.DAO;
 using LoanManagementApi.DAL.Services;
 using LoanManagementApi.Extentions;
 using LoanManagementApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Net;
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace LoanManagementApi.Controllers
 {
@@ -17,17 +14,14 @@ namespace LoanManagementApi.Controllers
 	[ApiController]
 	public class LoanController : ControllerBase
 	{
-		private ILogger<LoanController> _logger;
 		private ILoanDao _loanDao;
-		private ICollateralManagement _collateralManagement;
 
-		public LoanController(ILogger<LoanController> logger, ILoanDao dao, ICollateralManagement collateralDao)
+		public LoanController(ILoanDao dao)
 		{
-			_logger = logger;
 			_loanDao = dao;
-			_collateralManagement = collateralDao;
 		}
 
+		[Authorize]
 		/// <summary>
 		/// Get a list of <see cref="Loan"/>, filtered and paginated.
 		/// </summary>
@@ -57,9 +51,9 @@ namespace LoanManagementApi.Controllers
 			Loan loan;
 			try { loan = _loanDao.GetById(id, db); }
 			catch (InvalidOperationException) { return StatusCode((int)HttpStatusCode.InternalServerError, new { error = "more than one loan found for the given id" }); }
-			
-			if (loan == null) 
-				return NotFound( new { error = $"no loan found by id: {id}" });
+
+			if (loan == null)
+				return NotFound(new { error = $"no loan found by id: {id}" });
 			return Ok(loan);
 		}
 
@@ -95,31 +89,6 @@ namespace LoanManagementApi.Controllers
 		{
 			int rowsAffected = _loanDao.Delete(id, db);
 			return Ok(new { rowsaffected = rowsAffected });
-		}
-
-		[HttpPost("collateral")]
-		public async Task<IActionResult> SaveCollaterals([FromBody] JsonElement collateralsJson)
-		{
-			if (collateralsJson.ValueKind != JsonValueKind.Array)
-				return BadRequest(new { error = "Invalid Collateral Array" });
-
-			HttpResponseMessage response;
-			try { response = await _collateralManagement.Save(collateralsJson); }
-			catch (HttpRequestException) { return StatusCode((int) HttpStatusCode.ServiceUnavailable); }
-
-			if (response.StatusCode != HttpStatusCode.OK) 
-				return StatusCode((int)response.StatusCode);
-
-			JsonElement responseBody = JsonDocument.Parse(await response.Content.ReadAsStringAsync()).RootElement;
-			return Ok(responseBody);
-		}
-
-
-		//TODO: Remove this debug method
-		[HttpGet("Test")]
-		public IActionResult Test()
-		{
-			throw new System.Exception();
 		}
 
 		//TODO: Remove this debug method

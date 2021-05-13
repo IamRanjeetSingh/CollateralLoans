@@ -12,8 +12,8 @@ namespace AuthorizationApi.Services
 	{
 		public async Task<bool> ValidateCredentials(string userId, string password)
 		{
-			//TODO: implement credential validation logic
-			throw new NotImplementedException();
+			//TODO: add actual user credentials validation logic
+			return await Task.FromResult(userId == "ranjeet" && password == "password");
 		}
 	}
 }

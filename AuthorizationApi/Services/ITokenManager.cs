@@ -1,4 +1,7 @@
-﻿using System;
+﻿using AuthorizationApi.DTO;
+using AuthorizationApi.Exceptions;
+using AuthorizationApi.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,25 +9,25 @@ using System.Threading.Tasks;
 namespace AuthorizationApi.Services
 {
 	/// <summary>
-	/// Responsible for managing access and refresh token to corresponding user ids.
+	/// Responsible for generating new access and refresh tokens and handling token validation requests.
 	/// </summary>
 	public interface ITokenManager
 	{
 		/// <summary>
-		/// Save the tokens against the user id. If some tokens already exists for this id, they will be overwritten.
+		/// Handle the token validation request.
 		/// </summary>
-		/// <param name="userId">uniqe user id for which the tokens will be saved</param>
-		/// <param name="accessToken">access token</param>
-		/// <param name="refreshToken">refresh token</param>
-		void SaveOrUpdateTokens(string userId, string accessToken, string refreshToken);
+		/// <param name="request">validation request to be handledd</param>
+		/// <returns><see cref="TokenValidationResponse"/> containing validation result</returns>
+		/// <exception cref="ArgumentException">Request or AccessToken is null. The RefreshToken can also be null if RefreshIfExpired property is true</exception>
+		/// <exception cref="InvalidTokenException">invalid token was provided in the request</exception>
+		/// <exception cref="UnauthenticTokenException">refresh token was not issued for the claimed user</exception>
+		TokenValidationResponse HandleValidationRequest(TokenValidationRequest request);
 
 		/// <summary>
-		/// Validate the tokens against the user id.
+		/// Generate new tokens against the given user id. If old tokens exists in the system, they will be overwritten with the new ones.
 		/// </summary>
-		/// <param name="userId">unique user id for which the tokens will be saved</param>
-		/// <param name="accessToken">access token</param>
-		/// <param name="refreshToken">refresh token</param>
-		/// <returns></returns>
-		bool ValidateTokens(string userId, string accessToken, string refreshToken);
+		/// <param name="userId">unique user id against which the tokens will be generated</param>
+		/// <returns><see cref="TokenContainer"/> containing both access token and refresh token</returns>
+		TokenContainer GenerateNewTokens(string userId);
 	}
 }

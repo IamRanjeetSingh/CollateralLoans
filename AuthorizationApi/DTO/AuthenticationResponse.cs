@@ -9,8 +9,8 @@ namespace AuthorizationApi.DTO
 	{
 		public bool IsSuccessful { get; set; }
 		public string AccessToken { get; set; }
-		public DateTime AccessTokenExpiresIn { get; set; }
+		public DateTime? AccessTokenExpiresIn { get; set; }
 		public string RefreshToken { get; set; }
-		public DateTime RefreshTokenExpiresIn { get; set; }
+		public DateTime? RefreshTokenExpiresIn { get; set; }
 	}
 }

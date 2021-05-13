@@ -1,0 +1,114 @@
+{
+	"Routes": [
+		{
+			"DownstreamPathTemplate": "/api/loan",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "localhost",
+					"Port": 6001
+				}
+			],
+			"UpstreamPathTemplate": "/loanapi/loan",
+			"UpstreamHttpMethod": [ "GET", "POST" ]
+		},
+		{
+			"DownstreamPathTemplate": "/api/loan/{id}",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "localhost",
+					"Port": 6001
+				}
+			],
+			"UpstreamPathTemplate": "/loanapi/loan/{id}",
+			"UpstreamHttpMethod": [ "GET", "PUT", "PATCH", "DELETE" ]
+		},
+		{
+			"DownstreamPathTemplate": "/api/collateral",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "localhost",
+					"Port": 6001
+				}
+			],
+			"UpstreamPathTemplate": "/loanapi/collateral",
+			"UpstreamHttpMethod": [ "POST" ]
+		},
+		{
+			"DownstreamPathTemplate": "/api/collateral",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "localhost",
+					"Port": 6002
+				}
+			],
+			"UpstreamPathTemplate": "/collateralapi/collateral",
+			"UpstreamHttpMethod": [ "GET", "POST" ]
+		},
+		{
+			"DownstreamPathTemplate": "/api/collateral/{id}",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "localhost",
+					"Port": 6002
+				}
+			],
+			"UpstreamPathTemplate": "/collateralapi/collateral/{id}",
+			"UpstreamHttpMethod": [ "GET" ]
+		},
+		{
+			"DownstreamPathTemplate": "/api/collateral/collection",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "localhost",
+					"Port": 6002
+				}
+			],
+			"UpstreamPathTemplate": "/collateralapi/collateral/collection",
+			"UpstreamHttpMethod": [ "POST" ]
+		},
+		{
+			"DownstreamPathTemplate": "/api/risk/{id}",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "localhost",
+					"Port": 6003
+				}
+			],
+			"UpstreamPathTemplate": "/riskapi/risk/{id}",
+			"UpstreamHttpMethod": [ "GET" ]
+		},
+		{
+			"DownstreamPathTemplate": "/api/auth",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "localhost",
+					"Port": 7001
+				}
+			],
+			"UpstreamPathTemplate": "/authapi/auth",
+			"UpstreamHttpMethod": [ "POST" ]
+		},
+		{
+			"DownstreamPathTemplate": "/api/token",
+			"DownstreamScheme": "https",
+			"DownstreamHostAndPorts": [
+				{
+					"Host": "localhost",
+					"Port": 7001
+				}
+			],
+			"UpstreamPathTemplate": "/authapi/token",
+			"UpstreamHttpMethod": [ "POST" ]
+		}
+	],
+	"GlobalConfiguration": {
+	}
+}

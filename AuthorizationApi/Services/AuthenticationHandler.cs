@@ -13,39 +13,40 @@ namespace AuthorizationApi.Services
 	public class AuthenticationHandler : IAuthenticationHandler
 	{
 		private IUserManager _userManager;
-		private IAccessTokenGenerator _accessTokenGenerator;
-		private IRefreshTokenGenerator _refreshTokenGenerator;
+		private ITokenManager _tokenManager;
 
-		public AuthenticationHandler(IUserManager userManager, IAccessTokenGenerator accessTokenGenerator, IRefreshTokenGenerator refreshTokenGenerator)
+		public AuthenticationHandler(IUserManager userManager, ITokenManager tokenManager)
 		{
 			_userManager = userManager;
-			_accessTokenGenerator = accessTokenGenerator;
-			_refreshTokenGenerator = refreshTokenGenerator;
+			_tokenManager = tokenManager;
 		}
 
 		public async Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request)
 		{
+			if (request == null || string.IsNullOrEmpty(request.UserId) || string.IsNullOrEmpty(request.Password))
+				throw new ArgumentException("invalid authentication request");
+
 			if (!await _userManager.ValidateCredentials(request.UserId, request.Password))
 			{
 				return new AuthenticationResponse()
 				{
 					IsSuccessful = false,
 					AccessToken = null,
-					AccessTokenExpiresIn = DateTime.MinValue,
+					AccessTokenExpiresIn = null,
 					RefreshToken = null,
-					RefreshTokenExpiresIn = DateTime.MinValue
+					RefreshTokenExpiresIn = null
 				};
 			}
 
-			Token accessToken = _accessTokenGenerator.Generate(request.UserId);
-			Token refreshToken = _refreshTokenGenerator.Generate(request.UserId);
+			TokenContainer tokenContainer = _tokenManager.GenerateNewTokens(request.UserId);
 
 			return new AuthenticationResponse()
 			{
-				AccessToken = accessToken.AsString,
-				AccessTokenExpiresIn = accessToken.ExpiresIn,
-				RefreshToken = refreshToken.AsString,
-				RefreshTokenExpiresIn = refreshToken.ExpiresIn
+				IsSuccessful = true,
+				AccessToken = tokenContainer.AccessToken.AsString,
+				AccessTokenExpiresIn = tokenContainer.AccessToken.ExpiresIn,
+				RefreshToken = tokenContainer.RefreshToken.AsString,
+				RefreshTokenExpiresIn = tokenContainer.RefreshToken.ExpiresIn
 			};
 		}
 	}

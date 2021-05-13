@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace AuthorizationApi.Models
@@ -12,9 +13,9 @@ namespace AuthorizationApi.Models
 		public string SecurityAlgorithm { get; }
 		public string SecurityAlgorithmSignature { get; }
 
-		public SecurityParameters(SecurityKey signingKey, string securityAlgorithm, string securityAlgorithmSignature)
+		public SecurityParameters(string signingKey, string securityAlgorithm, string securityAlgorithmSignature)
 		{
-			SigningKey = signingKey;
+			SigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(signingKey));
 			SecurityAlgorithm = securityAlgorithm;
 			SecurityAlgorithmSignature = securityAlgorithmSignature;
 		}
