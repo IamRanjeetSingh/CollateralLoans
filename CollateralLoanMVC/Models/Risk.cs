@@ -9,8 +9,8 @@ namespace CollateralLoanMVC.Models
 	{
 		public double LoanValue { get; set; }
 		public double TotalCollateralValue { get; set; }
-		public double Raw { get => LoanValue - TotalCollateralValue; }
-		public double Percent { get => (LoanValue / TotalCollateralValue) * 100; }
+		public double Raw { get => Math.Max(LoanValue - TotalCollateralValue, 0); }
+		public double Percent { get => LoanValue != 0 ? (Raw * 100) / LoanValue : 0; }
 		public DateTime LastAssessDate { get; set; }
 	}
 }

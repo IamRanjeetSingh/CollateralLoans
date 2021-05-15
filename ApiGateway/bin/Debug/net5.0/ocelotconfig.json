@@ -1,6 +1,7 @@
 {
 	"Routes": [
 		{
+			"RouteIsCaseSensitive": false,
 			"DownstreamPathTemplate": "/api/loan",
 			"DownstreamScheme": "https",
 			"DownstreamHostAndPorts": [
@@ -17,6 +18,7 @@
 			}
 		},
 		{
+			"RouteIsCaseSensitive": false,
 			"DownstreamPathTemplate": "/api/loan/{id}",
 			"DownstreamScheme": "https",
 			"DownstreamHostAndPorts": [
@@ -29,6 +31,7 @@
 			"UpstreamHttpMethod": [ "GET", "PUT", "PATCH", "DELETE" ]
 		},
 		{
+			"RouteIsCaseSensitive": false,
 			"DownstreamPathTemplate": "/api/collateral",
 			"DownstreamScheme": "https",
 			"DownstreamHostAndPorts": [
@@ -41,6 +44,7 @@
 			"UpstreamHttpMethod": [ "POST" ]
 		},
 		{
+			"RouteIsCaseSensitive": false,
 			"DownstreamPathTemplate": "/api/collateral",
 			"DownstreamScheme": "https",
 			"DownstreamHostAndPorts": [
@@ -53,6 +57,7 @@
 			"UpstreamHttpMethod": [ "GET", "POST" ]
 		},
 		{
+			"RouteIsCaseSensitive": false,
 			"DownstreamPathTemplate": "/api/collateral/{id}",
 			"DownstreamScheme": "https",
 			"DownstreamHostAndPorts": [
@@ -65,6 +70,7 @@
 			"UpstreamHttpMethod": [ "GET" ]
 		},
 		{
+			"RouteIsCaseSensitive": false,
 			"DownstreamPathTemplate": "/api/collateral/collection",
 			"DownstreamScheme": "https",
 			"DownstreamHostAndPorts": [
@@ -77,6 +83,7 @@
 			"UpstreamHttpMethod": [ "POST" ]
 		},
 		{
+			"RouteIsCaseSensitive": false,
 			"DownstreamPathTemplate": "/api/risk/{id}",
 			"DownstreamScheme": "https",
 			"DownstreamHostAndPorts": [
@@ -89,6 +96,7 @@
 			"UpstreamHttpMethod": [ "GET" ]
 		},
 		{
+			"RouteIsCaseSensitive": false,
 			"DownstreamPathTemplate": "/api/auth",
 			"DownstreamScheme": "https",
 			"DownstreamHostAndPorts": [
@@ -101,6 +109,7 @@
 			"UpstreamHttpMethod": [ "POST" ]
 		},
 		{
+			"RouteIsCaseSensitive": false,
 			"DownstreamPathTemplate": "/api/token",
 			"DownstreamScheme": "https",
 			"DownstreamHostAndPorts": [

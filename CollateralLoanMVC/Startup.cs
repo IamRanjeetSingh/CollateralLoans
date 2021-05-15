@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,8 @@ namespace CollateralLoanMVC
 			services.AddScoped<ILoanManagement>(serviceProvider => 
 				new LoanManagement(
 					Configuration.GetValue<string>("ApiBaseUrls:LoanManagement"), 
-					serviceProvider.GetService<IHttpClientFactory>())
+					serviceProvider.GetService<IHttpClientFactory>(),
+					serviceProvider.GetService<ILogger<LoanManagement>>())
 				);
 
 			services.AddScoped<IRiskAssessment>(serviceProvider => 

@@ -49,7 +49,7 @@ namespace CollateralLoanMVC.Services
 		/// <returns>true if the whole request was successful, false otherwise</returns>
 		/// <exception cref="HttpRequestException">unable to connect with LoanManagementApi</exception>
 		/// <exception cref="UnexpectedResponseException">unexpected response received from LoanManagementApi</exception>
-		Task<string> SaveWithCollaterals(JsonElement loan, JsonElement collaterals);
+		Task<bool> SaveWithCollaterals(JsonElement loan, JsonElement collaterals);
 
 		/// <summary>
 		/// Deletes the loan associated with the given id.

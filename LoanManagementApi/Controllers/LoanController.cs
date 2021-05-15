@@ -140,6 +140,8 @@ namespace LoanManagementApi.Controllers
 			if (loan == null)
 				return BadRequest(new { error = "invalid loan object" });
 
+			_logger.LogInformation(collateralsJson.GetRawText());
+
 			HttpResponseMessage response;
 			try { response = await _collateralManagement.Save(collateralsJson); }
 			catch (HttpRequestException) { return StatusCode((int)HttpStatusCode.ServiceUnavailable, new { error = "unable to connect with CollateralManagementApi" }); }

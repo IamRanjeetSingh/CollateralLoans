@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RiskAssessmentApi", "RiskAs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthorizationApi", "AuthorizationApi\AuthorizationApi.csproj", "{07930FFC-2F69-4E29-868B-9E64938A29FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "ApiGateway\ApiGateway.csproj", "{6FF2EABD-1FA9-40F8-B60E-5FBE89DB58AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiGateway", "ApiGateway\ApiGateway.csproj", "{6FF2EABD-1FA9-40F8-B60E-5FBE89DB58AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollateralManagementApiTests", "CollateralManagementApiTests\CollateralManagementApiTests.csproj", "{21795124-0480-40BC-8B38-CBD791CABC34}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{6FF2EABD-1FA9-40F8-B60E-5FBE89DB58AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FF2EABD-1FA9-40F8-B60E-5FBE89DB58AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FF2EABD-1FA9-40F8-B60E-5FBE89DB58AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21795124-0480-40BC-8B38-CBD791CABC34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21795124-0480-40BC-8B38-CBD791CABC34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21795124-0480-40BC-8B38-CBD791CABC34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21795124-0480-40BC-8B38-CBD791CABC34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

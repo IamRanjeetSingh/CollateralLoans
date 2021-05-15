@@ -2,6 +2,7 @@
 using CollateralManagementApi.DAL.DAO;
 using CollateralManagementApi.Extentions;
 using CollateralManagementApi.Models;
+using CollateralManagementApi.Services;
 using CollateralManagementApi.Util;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -42,7 +43,7 @@ namespace CollateralManagementApi.Controllers
 		[HttpGet("{id}")]
 		public IActionResult GetById(int id, [FromServices] CollateralDb db)
 		{
-			Collateral collateral = _dao.GetById(db, id);
+			Collateral collateral = _dao.GetById(id, db);
 			if (collateral == null)
 				return StatusCode((int)HttpStatusCode.NotFound, new { error = $"no collateral found by id: {id}" });
 
@@ -63,8 +64,12 @@ namespace CollateralManagementApi.Controllers
 		[HttpPost("collection")]
 		public IActionResult SaveMultiple([FromBody] JsonElement collateralsJson, [FromServices] CollateralDb db)
 		{
+			_logger.LogInformation(collateralsJson.GetRawText());
+
 			if (collateralsJson.ValueKind != JsonValueKind.Array)
 				return BadRequest(new { error = "provided content is not a collateral array" });
+
+			_logger.LogInformation("collateralsJson is Array json value kind");
 
 			List<int> statusCodes = new List<int>();
 			for(int index = 0, length = collateralsJson.GetArrayLength(); index < length; index++)
@@ -77,15 +82,18 @@ namespace CollateralManagementApi.Controllers
 				
 				try { collateral = CollateralSerializer.DeserializeByType(collateralJson, "Type"); }
 				catch(ArgumentException e) {
-					_logger.LogInformation("ArgumentException: " + e.Message);
+					_logger.LogInformation(e.Message);
 					statusCodes.Add((int)HttpStatusCode.BadRequest);
 					continue;
 				}
 
+				_logger.LogInformation("going to save the collateral at index "+index);
+
 				_dao.Save(collateral, db);
+
+				_logger.LogInformation("collateral at index " + index + " saved");
 				statusCodes.Add((int)HttpStatusCode.Created);
 			}
-			_logger.LogInformation(JsonSerializer.Serialize(new { statuses = statusCodes }));
 			return StatusCode((int)HttpStatusCode.MultiStatus, new { statuses = statusCodes });
 		}
 

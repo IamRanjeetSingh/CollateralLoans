@@ -25,6 +25,7 @@ namespace LoanManagementApi.DAL.Services
 
 		public async Task<HttpResponseMessage> Save(JsonElement collaterals)
 		{
+			_logger.LogInformation(collaterals.GetRawText());
 			using (HttpClient client = _httpClientFactory.CreateClient())
 			{
 				HttpRequestMessage request = new HttpRequestMessage()

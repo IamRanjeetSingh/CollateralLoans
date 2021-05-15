@@ -5,6 +5,7 @@ using CollateralLoanMVC.Util;
 using CollateralLoanMVC.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -26,11 +27,13 @@ namespace CollateralLoanMVC.Controllers
 		/// Used for communicating with the Risk Assessment Api.
 		/// </summary>
 		private readonly IRiskAssessment _riskAssessment;
+		private readonly ILogger<LoanController> _logger;
 
-		public LoanController(ILoanManagement loanManagement, IRiskAssessment riskAssessment)
+		public LoanController(ILoanManagement loanManagement, IRiskAssessment riskAssessment, ILogger<LoanController> logger)
 		{
 			_loanManagement = loanManagement;
 			_riskAssessment = riskAssessment;
+			_logger = logger;
 		}
 
 		//TODO: check integration
@@ -108,15 +111,21 @@ namespace CollateralLoanMVC.Controllers
 		public async Task<IActionResult> Test(IFormCollection form, [FromServices] ILoanManagement loanManagement)
 		{
 			JsonElement loanJson = JsonDocument.Parse(FormReader.GetLoanJson(form)).RootElement;
-			JsonElement collateralsJson = JsonDocument.Parse($"[{FormReader.GetCollateralJson(form)}]").RootElement;
+			JsonElement collateralsJson = JsonDocument.Parse($"[{FormReader.GetCollateralJson(form, _logger)}]").RootElement;
+
+			_logger.LogInformation(collateralsJson.GetRawText());
 
 			try 
 			{
-				return Ok(await loanManagement.SaveWithCollaterals(loanJson, collateralsJson));
-				//if (await loanManagement.SaveWithCollaterals(loanJson, collateralsJson))
-				//	return Ok("loan and collaterals saved successfully");
-				//else
-				//	return StatusCode((int)HttpStatusCode.InternalServerError, new { error = "error occurred while saving loan and collaterals" });
+				//return Ok(await loanManagement.SaveWithCollaterals(loanJson, collateralsJson));
+				if (await loanManagement.SaveWithCollaterals(loanJson, collateralsJson))
+				{
+					int newLoanId = FormReader.GetLoan(form).Id;
+					return RedirectToAction(actionName: nameof(LoanController.View), new { id = newLoanId });
+				}
+				//return Ok("loan and collaterals saved successfully");
+				else
+					return StatusCode((int)HttpStatusCode.InternalServerError, new { error = "error occurred while saving loan and collaterals" });
 			}
 			catch(HttpRequestException) { return StatusCode((int)HttpStatusCode.ServiceUnavailable, new { error = "cannot connect with LoanManagementApi" }); }
 			catch (UnexpectedResponseException e) { return StatusCode((int)HttpStatusCode.InternalServerError, new { error = e.Message }); }

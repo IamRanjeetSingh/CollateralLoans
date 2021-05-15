@@ -1,6 +1,7 @@
 ﻿using CollateralLoanMVC.Exceptions;
 using CollateralLoanMVC.Models;
 using CollateralLoanMVC.Util;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -26,11 +27,13 @@ namespace CollateralLoanMVC.Services
 		/// It helps in avoiding resource management related issues.
 		/// </summary>
 		private readonly IHttpClientFactory _httpClientFactory;
+		private readonly ILogger<LoanManagement> _logger;
 
-		public LoanManagement(string loanApiBaseUrl, IHttpClientFactory httpClientFactory)
+		public LoanManagement(string loanApiBaseUrl, IHttpClientFactory httpClientFactory, ILogger<LoanManagement> logger)
 		{
 			_loanApiBaseUrl = loanApiBaseUrl;
 			_httpClientFactory = httpClientFactory;
+			_logger = logger;
 		}
 
 		//TODO: check integration
@@ -111,8 +114,10 @@ namespace CollateralLoanMVC.Services
 			}
 		}
 
-		public async Task<string> SaveWithCollaterals(JsonElement loan, JsonElement collaterals)
+		public async Task<bool> SaveWithCollaterals(JsonElement loan, JsonElement collaterals)
 		{
+			_logger.LogInformation(collaterals.GetRawText());
+
 			using(HttpClient client = _httpClientFactory.CreateClient())
 			{
 				HttpRequestMessage request = new HttpRequestMessage()
@@ -124,8 +129,8 @@ namespace CollateralLoanMVC.Services
 				HttpResponseMessage response = await client.SendAsync(request);
 
 				if (response.StatusCode != HttpStatusCode.OK) throw new UnexpectedResponseException($"LoanManagementApi response statusCode: {response.StatusCode}");
-
-				return await response.Content.ReadAsStringAsync();
+				return true;
+				//return await response.Content.ReadAsStringAsync();
 
 				//JsonElement responseBody = JsonDocument.Parse(await response.Content.ReadAsStringAsync()).RootElement;
 				//if (

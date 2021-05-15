@@ -1,5 +1,7 @@
-﻿using CollateralLoanMVC.Models;
+﻿using CollateralLoanMVC.Controllers;
+using CollateralLoanMVC.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,9 +70,50 @@ namespace CollateralLoanMVC.Util
 			return JsonSerializer.Serialize(GetLoan(form));
 		}
 
-		public static string GetCollateralJson(IFormCollection form)
+		//public static string GetCollateralJson(IFormCollection form, ILogger<LoanController> logger)
+		//{
+		//	logger.LogInformation(JsonSerializer.Serialize(GetCollateral(form)));
+		//	return JsonSerializer.Serialize(GetCollateral(form));
+		//}
+
+
+		public static string GetCollateralJson(IFormCollection form, ILogger<LoanController> logger)
 		{
-			return JsonSerializer.Serialize(GetCollateral(form));
+			if (form[$"{nameof(Collateral)}_{nameof(Collateral.Type)}"] == CollateralType.Land)
+			{
+				Land land = new Land()
+				{
+					Id = int.Parse(form[$"{nameof(Collateral)}_{nameof(Collateral.Id)}"].ToString().Trim()),
+					LoanId = int.Parse(form[$"{nameof(Loan)}_{nameof(Loan.Id)}"].ToString().Trim()),
+					CustomerId = int.Parse(form[$"{nameof(Loan)}_{nameof(Loan.CustomerId)}"].ToString().Trim()),
+					InitialAssesDate = DateTime.Parse(form[$"{nameof(Collateral)}_{nameof(Collateral.InitialAssesDate)}"]),
+					LastAssessDate = DateTime.Parse(form[$"{nameof(Collateral)}_{nameof(Collateral.LastAssessDate)}"]),
+					AreaInSqFt = double.Parse(form[$"{nameof(Collateral)}_{nameof(Land)}_{nameof(Land.AreaInSqFt)}"]),
+					InitialPricePerSqFt = double.Parse(form[$"{nameof(Collateral)}_{nameof(Land)}_{nameof(Land.InitialPricePerSqFt)}"]),
+					CurrentPricePerSqFt = double.Parse(form[$"{nameof(Collateral)}_{nameof(Land)}_{nameof(Land.CurrentPricePerSqFt)}"])
+				};
+				return JsonSerializer.Serialize(land);
+			}
+			else if (form["collateral_type"] == CollateralType.RealEstate)
+			{
+				RealEstate realEstate = new RealEstate()
+				{
+					Id = int.Parse(form[$"{nameof(Collateral)}_{nameof(Collateral.Id)}"].ToString().Trim()),
+					LoanId = int.Parse(form[$"{nameof(Loan)}_{nameof(Loan.Id)}"].ToString().Trim()),
+					CustomerId = int.Parse(form[$"{nameof(Loan)}_{nameof(Loan.CustomerId)}"].ToString().Trim()),
+					InitialAssesDate = DateTime.Parse(form[$"{nameof(Collateral)}_{nameof(Collateral.InitialAssesDate)}"]),
+					LastAssessDate = DateTime.Parse(form[$"{nameof(Collateral)}_{nameof(Collateral.LastAssessDate)}"]),
+					AreaInSqFt = double.Parse(form[$"{nameof(Collateral)}_{nameof(RealEstate)}_{nameof(RealEstate.AreaInSqFt)}"]),
+					InitialLandPricePerSqFt = double.Parse(form[$"{nameof(Collateral)}_{nameof(RealEstate)}_{nameof(RealEstate.InitialLandPricePerSqFt)}"]),
+					CurrentLandPricePerSqFt = double.Parse(form[$"{nameof(Collateral)}_{nameof(RealEstate)}_{nameof(RealEstate.CurrentLandPricePerSqFt)}"]),
+					YearBuilt = int.Parse(form[$"{nameof(Collateral)}_{nameof(RealEstate)}_{nameof(RealEstate.YearBuilt)}"]),
+					InitialStructurePrice = double.Parse(form[$"{nameof(Collateral)}_{nameof(RealEstate)}_{nameof(RealEstate.InitialStructurePrice)}"]),
+					CurrentStructurePrice = double.Parse(form[$"{nameof(Collateral)}_{nameof(RealEstate)}_{nameof(RealEstate.CurrentStructurePrice)}"])
+				};
+				return JsonSerializer.Serialize(realEstate);
+			}
+			else
+				throw new NotImplementedException();
 		}
 	}
 }

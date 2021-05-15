@@ -2,6 +2,7 @@ using CollateralManagementApi.Controllers;
 using CollateralManagementApi.DAL;
 using CollateralManagementApi.DAL.DAO;
 using CollateralManagementApi.Models;
+using CollateralManagementApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;

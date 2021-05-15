@@ -52,7 +52,7 @@ namespace RiskAssessmentApi.Services
 
 			return new Risk()
 			{
-				LoanValue = totalCollateralValue,//TODO: change the loan value, use right formula to calculate the final loan amount
+				LoanValue = loan.Principal,//TODO: change the loan value, use right formula to calculate the final loan amount
 				TotalCollateralValue = totalCollateralValue,
 				LastAssessDate = lastAssessDate
 			};
