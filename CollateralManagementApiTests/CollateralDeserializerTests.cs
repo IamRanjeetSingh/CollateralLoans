@@ -60,7 +60,7 @@ namespace CollateralManagementApiTests
 			Collateral collateral3 = Newtonsoft.Json.JsonConvert.DeserializeObject<Land>(collateralString2);
 
 
-			throw new Exception(JsonSerializer.Serialize(collateral4));
+			throw new Exception(JsonSerializer.Serialize(collateral1));
 		}
 	}
 }

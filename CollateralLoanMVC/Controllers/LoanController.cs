@@ -27,12 +27,14 @@ namespace CollateralLoanMVC.Controllers
 		/// Used for communicating with the Risk Assessment Api.
 		/// </summary>
 		private readonly IRiskAssessment _riskAssessment;
+		private readonly ICollateralManagement _collateralManagement;
 		private readonly ILogger<LoanController> _logger;
 
-		public LoanController(ILoanManagement loanManagement, IRiskAssessment riskAssessment, ILogger<LoanController> logger)
+		public LoanController(ILoanManagement loanManagement, IRiskAssessment riskAssessment, ICollateralManagement collateralManagement, ILogger<LoanController> logger)
 		{
 			_loanManagement = loanManagement;
 			_riskAssessment = riskAssessment;
+			_collateralManagement = collateralManagement;
 			_logger = logger;
 		}
 
@@ -61,9 +63,11 @@ namespace CollateralLoanMVC.Controllers
 		{
 			Task<Loan> loanTask = _loanManagement.Get(id);
 			Task<Risk> riskTask = _riskAssessment.Get(id);
+			Task<List<Collateral>> collateralsTask = _collateralManagement.GetByLoanId(id);
 
 			Loan loan;
 			Risk risk;
+			Collateral collateral;
 
 			try { loan = await loanTask; }
 			catch (HttpRequestException) { return StatusCode((int)HttpStatusCode.ServiceUnavailable, new { error = "unable to connect with LoanManagementApi" }); }
@@ -73,6 +77,10 @@ namespace CollateralLoanMVC.Controllers
 			catch (HttpRequestException) { return StatusCode((int)HttpStatusCode.ServiceUnavailable, new { error = "unable to connect with RiskAssessmentApi" }); }
 			catch (UnexpectedResponseException) { return StatusCode((int)HttpStatusCode.InternalServerError, new { error = "something went wrong in RiskAssessmentApi" }); }
 
+			try { collateral = (await collateralsTask)[0]; }
+			catch (HttpRequestException) { return StatusCode((int)HttpStatusCode.ServiceUnavailable, new { error = "unable to connect with CollateralManagementApi" }); }
+			catch (UnexpectedResponseException) { return StatusCode((int)HttpStatusCode.InternalServerError, new { error = "something went wrong in CollateralManagementApi" }); }
+
 			if (loan == null)
 				return NotFound();
 
@@ -80,7 +88,8 @@ namespace CollateralLoanMVC.Controllers
 				new ViewLoanViewModel()
 				{
 					Loan = loan,
-					Risk = risk
+					Risk = risk,
+					Collateral = collateral
 				}
 			);
 		}
@@ -132,3 +141,33 @@ namespace CollateralLoanMVC.Controllers
 		}
 	}
 }
+
+
+//[HttpGet("{id}")]
+//public async Task<ActionResult> View(int id)
+//{
+//	Task<Loan> loanTask = _loanManagement.Get(id);
+//	Task<Risk> riskTask = _riskAssessment.Get(id);
+
+//	Loan loan;
+//	Risk risk;
+
+//	try { loan = await loanTask; }
+//	catch (HttpRequestException) { return StatusCode((int)HttpStatusCode.ServiceUnavailable, new { error = "unable to connect with LoanManagementApi" }); }
+//	catch (UnexpectedResponseException) { return StatusCode((int)HttpStatusCode.InternalServerError, new { error = "something went wrong in LoanManagementApi" }); }
+
+//	try { risk = await riskTask; }
+//	catch (HttpRequestException) { return StatusCode((int)HttpStatusCode.ServiceUnavailable, new { error = "unable to connect with RiskAssessmentApi" }); }
+//	catch (UnexpectedResponseException) { return StatusCode((int)HttpStatusCode.InternalServerError, new { error = "something went wrong in RiskAssessmentApi" }); }
+
+//	if (loan == null)
+//		return NotFound();
+
+//	return View("View",
+//		new ViewLoanViewModel()
+//		{
+//			Loan = loan,
+//			Risk = risk
+//		}
+//	);
+//}

@@ -10,5 +10,6 @@ namespace CollateralLoanMVC.ViewModels
 	{
 		public Loan Loan { get; set; }
 		public Risk Risk { get; set; }
+		public Collateral Collateral { get; set; }
 	}
 }

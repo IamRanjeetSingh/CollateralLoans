@@ -62,6 +62,7 @@ namespace CollateralManagementApi.DAL
 			Collaterals.Add(
 				new Land()
 				{
+					Id = 3001,
 					LoanId = 1001,
 					CustomerId = 2001,
 					InitialAssesDate = DateTime.Now.AddDays(-5),
@@ -73,6 +74,7 @@ namespace CollateralManagementApi.DAL
 			Collaterals.Add(
 				new RealEstate()
 				{
+					Id = 3002,
 					LoanId = 1001,
 					CustomerId = 2001,
 					InitialAssesDate = DateTime.Now.AddDays(-6),
@@ -87,6 +89,7 @@ namespace CollateralManagementApi.DAL
 			Collaterals.Add(
 				new Land()
 				{
+					Id = 3003,
 					LoanId = 1002,
 					CustomerId = 2001,
 					InitialAssesDate = DateTime.Now.AddDays(-7),
@@ -98,6 +101,7 @@ namespace CollateralManagementApi.DAL
 			Collaterals.Add(
 				new RealEstate()
 				{
+					Id = 3004,
 					LoanId = 1003,
 					CustomerId = 2002,
 					InitialAssesDate = DateTime.Now.AddDays(-8),

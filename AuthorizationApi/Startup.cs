@@ -39,7 +39,7 @@ namespace AuthorizationApi
 
 			services.AddScoped<IAuthenticationHandler, AuthenticationHandler>();
 
-			services.AddScoped<IUserManager>(serviceProvider => new UserManager());
+			services.AddScoped<IUserManager>(serviceProvider => new UserManager(serviceProvider.GetService<ILogger<UserManager>>()));
 
 			services.AddScoped<ITokenManager, TokenManager>();
 

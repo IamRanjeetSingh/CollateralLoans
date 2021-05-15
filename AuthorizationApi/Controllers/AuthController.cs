@@ -1,9 +1,11 @@
 ﻿using AuthorizationApi.DTO;
 using AuthorizationApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace AuthorizationApi.Controllers
@@ -19,10 +21,12 @@ namespace AuthorizationApi.Controllers
 		/// Use the service for authenticating the users and generating tokens for them.
 		/// </summary>
 		private IAuthenticationHandler _authHandler;
+		private ILogger<AuthController> _logger;
 
-		public AuthController(IAuthenticationHandler authHandler)
+		public AuthController(IAuthenticationHandler authHandler, ILogger<AuthController> logger)
 		{
 			_authHandler = authHandler;
+			_logger = logger;
 		}
 
 		/// <summary>
@@ -35,7 +39,13 @@ namespace AuthorizationApi.Controllers
 		[HttpPost("")]
 		public async Task<IActionResult> Authenticate([FromBody] AuthenticationRequest request)
 		{
-			try { return Ok(await _authHandler.AuthenticateAsync(request)); }
+			_logger.LogInformation(JsonSerializer.Serialize(request));
+			try 
+			{
+				AuthenticationResponse response = await _authHandler.AuthenticateAsync(request);
+				_logger.LogInformation(JsonSerializer.Serialize(response));
+				return Ok(response); 
+			}
 			catch (ArgumentException) { return BadRequest(new { error = "invalid authentication request" }); }
 		}
 	}

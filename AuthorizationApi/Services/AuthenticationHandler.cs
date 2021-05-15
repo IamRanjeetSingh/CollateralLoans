@@ -1,8 +1,10 @@
 ﻿using AuthorizationApi.DTO;
 using AuthorizationApi.Models;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace AuthorizationApi.Services
@@ -14,11 +16,13 @@ namespace AuthorizationApi.Services
 	{
 		private IUserManager _userManager;
 		private ITokenManager _tokenManager;
+		private ILogger<AuthenticationHandler> _logger;
 
-		public AuthenticationHandler(IUserManager userManager, ITokenManager tokenManager)
+		public AuthenticationHandler(IUserManager userManager, ITokenManager tokenManager, ILogger<AuthenticationHandler> logger)
 		{
 			_userManager = userManager;
 			_tokenManager = tokenManager;
+			_logger = logger;
 		}
 
 		public async Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request)
@@ -26,7 +30,13 @@ namespace AuthorizationApi.Services
 			if (request == null || string.IsNullOrEmpty(request.UserId) || string.IsNullOrEmpty(request.Password))
 				throw new ArgumentException("invalid authentication request");
 
-			if (!await _userManager.ValidateCredentials(request.UserId, request.Password))
+			_logger.LogInformation(JsonSerializer.Serialize(request));
+
+			bool validationResult = await _userManager.ValidateCredentials(request.UserId, request.Password);
+
+			_logger.LogInformation("credentials validation result: "+validationResult);
+
+			if (!validationResult)
 			{
 				return new AuthenticationResponse()
 				{

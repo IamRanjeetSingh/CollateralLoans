@@ -18,13 +18,6 @@ namespace CollateralManagementApiTests
 		private CollateralController controller;
 		private Mock<ICollateralDao> daoMock;
 
-		[OneTimeSetUp]
-		public void SetupTests()
-		{
-			daoMock = new Mock<ICollateralDao>();
-			controller = new CollateralController(daoMock.Object);
-		}
-
 
 	}
 }

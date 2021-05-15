@@ -1,4 +1,5 @@
 using CollateralLoanMVC.Services;
+using CollateralLoanMVC.Util;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -42,6 +43,29 @@ namespace CollateralLoanMVC
 					Configuration.GetValue<string>("ApiBaseUrls:RiskAssessment"),
 					serviceProvider.GetService<IHttpClientFactory>())
 				);
+
+			string authApiBaseUrl = Configuration.GetValue<string>("ApiBaseUrls:AuthManagement");
+			services.AddScoped<IAuthManagement>(serviceProvider =>
+				new AuthManagement(serviceProvider.GetService<IHttpClientFactory>(), authApiBaseUrl, serviceProvider.GetService<ILogger<AuthManagement>>()));
+
+			string collateralApiBaseUrl = Configuration.GetValue<string>("ApiBaseUrls:CollateralManagement");
+			services.AddScoped<ICollateralManagement>(serviceProvider =>
+				new CollateralManagement(serviceProvider.GetService<IHttpClientFactory>(), collateralApiBaseUrl, serviceProvider.GetService<ILogger<CollateralManagement>>()));
+
+			services
+				.AddAuthentication(TokenAuthenticationHandler.TokenAuthenticationScheme)
+				.AddScheme<TokenAuthenticationHandlerOptions, TokenAuthenticationHandler>(
+					TokenAuthenticationHandler.TokenAuthenticationScheme,
+					options =>
+					{
+						options.Authority = Configuration.GetValue<string>("ApiBaseUrls:AuthManagement");
+					}
+				);
+
+			services.AddSession(options =>
+			{
+				options.IdleTimeout = TimeSpan.FromMinutes(30);
+			});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,7 +84,11 @@ namespace CollateralLoanMVC
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 
+			app.UseSession();
+
 			app.UseRouting();
+
+			app.UseAuthentication();
 
 			app.UseAuthorization();
 
@@ -68,7 +96,7 @@ namespace CollateralLoanMVC
 			{
 				endpoints.MapControllerRoute(
 					name: "default",
-					pattern: "{controller=Home}/{action=Index}/{id?}");
+					pattern: "{controller=Home}/{action=Index}");
 			});
 		}
 	}

@@ -1,0 +1,26 @@
+﻿@model CollateralLoanMVC.ViewModels.LoginViewModel
+
+<div class="container-fluid">
+	<h3 class="text-primary">Login</h3>
+	<form asp-action="Login" asp-controller="Account" method="post" class="col-6">
+		<div asp-validation-summary="ModelOnly" class="text-danger row"></div>
+		<div class="row p-1">
+			<label asp-for="UserId" class="col-form-label col-12">UserId</label>
+			<input asp-for="UserId" class="form-control col-8" />
+			<span asp-validation-for="UserId" class="text-danger col-4"></span>
+		</div>
+		<div class="row p-1">
+			<label asp-for="Password" class="col-form-label col-12">Password</label>
+			<input asp-for="Password" class="form-control col-8" />
+			<span asp-validation-for="Password" class="text-danger col-4"></span>
+		</div>
+		<div class="row p-1">
+			<input type="submit" value="Login" class="btn btn-primary btn-block col-3" />
+		</div>
+	</form>
+</div>
+
+@section Scripts{
+	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
