@@ -19,7 +19,7 @@ namespace AuthorizationApi.DAL
 		{
 			modelBuilder.Entity<UserTokens>().HasKey(ut => ut.UserId);
 			modelBuilder.Entity<UserTokens>().Property(ut => ut.UserId).ValueGeneratedNever();
-			modelBuilder.Entity<UserTokens>().Property(ut => ut.RefreshToken).IsRequired();
+			modelBuilder.Entity<UserTokens>().Property(ut => ut.LastRefreshToken).IsRequired();
 
 			base.OnModelCreating(modelBuilder);
 		}

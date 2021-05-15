@@ -14,14 +14,12 @@ namespace AuthorizationApi.Services
 	/// </summary>
 	public class RefreshTokenFactory : IRefreshTokenFactory
 	{
-		private ILogger<RefreshTokenFactory> _logger;
 		private SecurityParameters _securityParams;
 		private int _expiresIn;
 		private IUserTokensDao _userTokensDao;
 
-		public RefreshTokenFactory(ILogger<RefreshTokenFactory> logger, SecurityParameters securityParams, int expiresIn, IUserTokensDao userTokensDao)
+		public RefreshTokenFactory(SecurityParameters securityParams, int expiresIn, IUserTokensDao userTokensDao)
 		{
-			_logger = logger;
 			_securityParams = securityParams;
 			_expiresIn = expiresIn;
 			_userTokensDao = userTokensDao;
@@ -44,9 +42,10 @@ namespace AuthorizationApi.Services
 			return new Token(tokenAsString, expiresIn);
 		}
 
-		public bool Validate(string refreshToken)
+		public bool Validate(string userId, string refreshToken)
 		{
-			_logger.LogInformation($"Validating Refresh token for {refreshToken}");//TODO: remove log
+			if (userId == null || refreshToken == null) throw new ArgumentNullException();
+
 			JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
 			try
 			{
@@ -63,17 +62,19 @@ namespace AuthorizationApi.Services
 					},
 					out SecurityToken validatedToken);
 
-				if (claimsPrincipal == null || claimsPrincipal.Identity == null || claimsPrincipal.Identity.Name == null) throw new UnauthenticTokenException("no claims found");
+				if (claimsPrincipal == null || claimsPrincipal.Identity == null || claimsPrincipal.Identity.Name == null) 
+					throw new UnauthenticTokenException("no claims found");
+
 				UserTokens userTokens = _userTokensDao.GetByUserId(claimsPrincipal.Identity.Name);
-				if (userTokens == null || userTokens.RefreshToken != refreshToken) throw new UnauthenticTokenException("refresh tokens does not match for the given user id");
+				if (userTokens == null || userTokens.LastRefreshToken != refreshToken) 
+					throw new UnauthenticTokenException("refresh tokens does not match for the given user id");
 
-				_logger.LogInformation($"{validatedToken.ValidFrom} < {validatedToken.ValidTo}: {validatedToken.ValidFrom < validatedToken.ValidTo}");//TODO: remove log
-				_logger.LogInformation($"{validatedToken.ValidTo} >= {DateTime.UtcNow}: {validatedToken.ValidTo >= DateTime.UtcNow}");//TODO: remove log
+				if (validatedToken.ValidFrom >= validatedToken.ValidTo || validatedToken.ValidTo < DateTime.UtcNow)
+					throw new SecurityTokenExpiredException("token lifetime is invalid");
 
-				return validatedToken.ValidFrom < validatedToken.ValidTo && validatedToken.ValidTo >= DateTime.UtcNow;
+				return true;
 			}
-			catch (UnauthenticTokenException) { throw; }
-			catch (Exception) { throw new InvalidTokenException("invalid refresh token"); }
+			catch (Exception) { return false; }
 		}
 	}
 }

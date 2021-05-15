@@ -1,6 +1,7 @@
 using LoanManagementApi.DAL;
 using LoanManagementApi.DAL.DAO;
 using LoanManagementApi.DAL.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -49,6 +50,15 @@ namespace LoanManagementApi
 				);
 			
 			services.AddSwaggerGen(options => options.SwaggerDoc("v1", new OpenApiInfo() { Title = "LoanManagementApi", Version = "v1" }));
+
+			//LoanManagementApi
+			services.AddAuthentication(TokenAuthenticationHandler.TokenAuthenticationScheme);
+			services
+				.AddAuthentication(TokenAuthenticationHandler.TokenAuthenticationScheme)
+				.AddScheme<TokenAuthenticationHandlerOptions, TokenAuthenticationHandler>(
+					TokenAuthenticationHandler.TokenAuthenticationScheme,
+					options => options.Authority = Configuration.GetValue<string>("TokenValidationUrl")
+				);
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

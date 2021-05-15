@@ -1,0 +1,16 @@
+﻿<div class="row py-3">
+	<div class="col-4">
+		<label for="@string.Concat(nameof(Collateral), "_", nameof(Land), "_", nameof(Land.InitialPricePerSqFt))">Initial Price (per sq.ft.)</label>
+		<input id="@string.Concat(nameof(Collateral), "_", nameof(Land), "_", nameof(Land.InitialPricePerSqFt))" class="form-control" name="@string.Concat(nameof(Collateral), "_", nameof(Land), "_", nameof(Land.InitialPricePerSqFt))" type="text" pattern="^[0-9.]+$" placeholder="initial price..." />
+	</div>
+	<div class="col-4">
+		<label for="@string.Concat(nameof(Collateral), "_", nameof(Land), "_", nameof(Land.CurrentPricePerSqFt))">Current Price (per sq. ft.)</label>
+		<input id="@string.Concat(nameof(Collateral), "_", nameof(Land), "_", nameof(Land.CurrentPricePerSqFt))" class="custom-select" name="@string.Concat(nameof(Collateral), "_", nameof(Land), "_", nameof(Land.CurrentPricePerSqFt))" type="text" pattern="^[0-9.]+$" placeholder="current price..." />
+	</div>
+</div>
+<div class="row py-3">
+	<div class="col-4">
+		<label for="@string.Concat(nameof(Collateral), "_", nameof(Land), "_", nameof(Land.AreaInSqFt))">Area (in sq. ft.)</label>
+		<input id="@string.Concat(nameof(Collateral), "_", nameof(Land), "_", nameof(Land.AreaInSqFt))" class="custom-select" name="@string.Concat(nameof(Collateral), "_", nameof(Land), "_", nameof(Land.AreaInSqFt))" type="text" pattern="^[0-9.]+$" placeholder="area in sq ft..." />
+	</div>
+</div>

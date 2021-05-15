@@ -5,23 +5,31 @@ using LoanManagementApi.Extentions;
 using LoanManagementApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Net;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace LoanManagementApi.Controllers
 {
+	//TODO: add authorization
 	[Route("api/[controller]")]
 	[ApiController]
 	public class LoanController : ControllerBase
 	{
+		private ILogger<LoanController> _logger;
 		private ILoanDao _loanDao;
+		private ICollateralManagement _collateralManagement;
 
-		public LoanController(ILoanDao dao)
+		public LoanController(ILogger<LoanController> logger, ILoanDao dao, ICollateralManagement collateralManagement)
 		{
+			_logger = logger;
 			_loanDao = dao;
+			_collateralManagement = collateralManagement;
 		}
 
-		[Authorize]
 		/// <summary>
 		/// Get a list of <see cref="Loan"/>, filtered and paginated.
 		/// </summary>
@@ -97,6 +105,61 @@ namespace LoanManagementApi.Controllers
 		{
 			db.Seed();
 			return Ok();
+		}
+
+		//TODO: Remove this debug method
+		[Authorize]
+		[HttpGet("[action]")]
+		public IActionResult Authorized()
+		{
+			return Ok("data from authorized action");
+		}
+
+		/// <summary>
+		/// Save loan and collaterals in their respective data sources.
+		/// </summary>
+		/// <param name="loanWithCollaterals">Json object containing both loan object and collaterals array</param>
+		/// <returns></returns>
+		/// <response code="200">Both, loan and collaterals where saved successfully</response>
+		/// <response code="400">request body is invalid</response>
+		/// <response code="500">something went wrong in CollateralManagementApi</response>
+		/// <response code="503">unable to connect with CollateralManagementApi</response>
+		[HttpPost("[action]")]
+		public async Task<IActionResult> SaveWithCollaterals([FromBody] JsonElement loanWithCollaterals, [FromServices] LoanDb db)
+		{
+			if (loanWithCollaterals.ValueKind != JsonValueKind.Object)
+				return BadRequest(new { error = "invalid request body" });
+
+			JsonElement loanJson = loanWithCollaterals.GetProperty("loan");
+			JsonElement collateralsJson = loanWithCollaterals.GetProperty("collaterals");
+
+			if (collateralsJson.ValueKind != JsonValueKind.Array)
+				return BadRequest(new { error = "invalid collateral array" });
+
+			Loan loan = JsonSerializer.Deserialize<Loan>(loanJson.GetRawText(), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+			if (loan == null)
+				return BadRequest(new { error = "invalid loan object" });
+
+			HttpResponseMessage response;
+			try { response = await _collateralManagement.Save(collateralsJson); }
+			catch (HttpRequestException) { return StatusCode((int)HttpStatusCode.ServiceUnavailable, new { error = "unable to connect with CollateralManagementApi" }); }
+
+			if (response.StatusCode != HttpStatusCode.MultiStatus)
+				return StatusCode((int)HttpStatusCode.InternalServerError, new { error = "something went wrong in CollateralManagentApi, status code: "+response.StatusCode });
+
+			int rowsAffected = _loanDao.Save(loan, db);
+
+			if (rowsAffected <= 0)
+				return StatusCode((int)HttpStatusCode.InternalServerError, new { error = "something went wrong while saving the loan details" });
+
+			JsonElement responseBody = JsonDocument.Parse(await response.Content.ReadAsStringAsync()).RootElement;
+
+			if (!responseBody.TryGetProperty("statuses", out JsonElement collateralSaveStatuses) || collateralSaveStatuses.ValueKind != JsonValueKind.Array)
+				return StatusCode((int)HttpStatusCode.InternalServerError, new { error = "invalid response from CollateralManagementApi" });
+
+			_logger.LogInformation(JsonSerializer.Serialize(new { loanSaveStatus = (int)HttpStatusCode.Created, collateralSaveStatuses = collateralSaveStatuses }));
+
+			return Ok(new { loanSaveStatus = (int)HttpStatusCode.Created, collateralSaveStatuses = collateralSaveStatuses });
 		}
 	}
 }

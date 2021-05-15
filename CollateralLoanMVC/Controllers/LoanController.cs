@@ -3,10 +3,13 @@ using CollateralLoanMVC.Models;
 using CollateralLoanMVC.Services;
 using CollateralLoanMVC.Util;
 using CollateralLoanMVC.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace CollateralLoanMVC.Controllers
@@ -38,6 +41,8 @@ namespace CollateralLoanMVC.Controllers
 		[HttpGet("[action]")]
 		public ActionResult New()
 		{
+			ViewBag.LoanTypes = new string[] { "Home", "Car" };
+			ViewBag.CollateralTypes = new string[] { "RealEstate", "Land" };
 			return View();
 		}
 
@@ -68,8 +73,8 @@ namespace CollateralLoanMVC.Controllers
 			if (loan == null)
 				return NotFound();
 
-			return View(
-				new LoanViewModel()
+			return View("View2",
+				new ViewLoanViewModel()
 				{
 					Loan = loan,
 					Risk = risk
@@ -96,6 +101,25 @@ namespace CollateralLoanMVC.Controllers
 			catch (UnexpectedResponseException) { return StatusCode((int)HttpStatusCode.InternalServerError, new { error = "something went wrong in LoanManagementApi" }); }
 
 			return Ok(loans);
+		}
+
+
+		[HttpPost("[action]")]
+		public async Task<IActionResult> Test(IFormCollection form, [FromServices] ILoanManagement loanManagement)
+		{
+			JsonElement loanJson = JsonDocument.Parse(FormReader.GetLoanJson(form)).RootElement;
+			JsonElement collateralsJson = JsonDocument.Parse($"[{FormReader.GetCollateralJson(form)}]").RootElement;
+
+			try 
+			{
+				return Ok(await loanManagement.SaveWithCollaterals(loanJson, collateralsJson));
+				//if (await loanManagement.SaveWithCollaterals(loanJson, collateralsJson))
+				//	return Ok("loan and collaterals saved successfully");
+				//else
+				//	return StatusCode((int)HttpStatusCode.InternalServerError, new { error = "error occurred while saving loan and collaterals" });
+			}
+			catch(HttpRequestException) { return StatusCode((int)HttpStatusCode.ServiceUnavailable, new { error = "cannot connect with LoanManagementApi" }); }
+			catch (UnexpectedResponseException e) { return StatusCode((int)HttpStatusCode.InternalServerError, new { error = e.Message }); }
 		}
 	}
 }

@@ -10,7 +10,11 @@
 				}
 			],
 			"UpstreamPathTemplate": "/loanapi/loan",
-			"UpstreamHttpMethod": [ "GET", "POST" ]
+			"UpstreamHttpMethod": [ "GET", "POST" ],
+			"AuthenticationOptions": {
+				"AuthenticationProvider": "Basic",
+				"AllowedScopes": []
+			}
 		},
 		{
 			"DownstreamPathTemplate": "/api/loan/{id}",

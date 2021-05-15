@@ -1,0 +1,15 @@
+﻿@model CollateralLoanMVC.Views.Home.TestUser
+
+<form asp-action="test" asp-controller="home" method="post">
+	@for (int i = 0; i < 3; i++)
+	{
+		<input name="[@i].Name" type="text"/>
+		<input name="[@i].Age" type="number" />
+		@for(int j = 0; j < 2; j++)
+		{
+			<input name="[@i].Phones[@j].Provider" type="text" />
+			<input name="[@i].Phones[@j].Number" type="number" />
+		}
+	}
+	<input type="submit" value="submit"/>
+</form>

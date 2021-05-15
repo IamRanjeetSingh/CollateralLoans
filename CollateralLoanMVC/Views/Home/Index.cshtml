@@ -31,7 +31,7 @@
 
 		function addNewRow(loan) {
 			let newRow =
-				"<tr>" +
+				"<tr onclick=\"window.location.href = 'https://localhost:9001/loan/"+ loan.id +"';\" style=\"cursor: pointer\">" +
 				"<th scope=\"row\">" + loan.id + "</th>" +
 				"<td>" + loan.customerId + "</td>" +
 				"<td>" + loan.type + "</td>" +

@@ -18,7 +18,7 @@ namespace AuthorizationApi.Services
 		/// </summary>
 		/// <param name="request">validation request to be handledd</param>
 		/// <returns><see cref="TokenValidationResponse"/> containing validation result</returns>
-		/// <exception cref="ArgumentException">Request or AccessToken is null. The RefreshToken can also be null if RefreshIfExpired property is true</exception>
+		/// <exception cref="ArgumentException">Request or UserId is null. The AccessToken can also be null if RefreshIfExpired property is false. The RefreshToken can also be null if RefreshIfExpired property is true</exception>
 		/// <exception cref="InvalidTokenException">invalid token was provided in the request</exception>
 		/// <exception cref="UnauthenticTokenException">refresh token was not issued for the claimed user</exception>
 		TokenValidationResponse HandleValidationRequest(TokenValidationRequest request);

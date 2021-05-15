@@ -28,8 +28,7 @@ namespace AuthorizationApi.Controllers
 		public IActionResult Validate([FromBody] TokenValidationRequest request)
 		{
 			try { return Ok(_tokenManager.HandleValidationRequest(request)); }
-			catch (Exception e) when (e is ArgumentException || e is InvalidTokenException || e is UnauthenticTokenException)
-			{ return BadRequest(new { error = "invalid token validation request" }); }
+			catch (ArgumentException) { return BadRequest(new { error = "invalid token validation request" }); }
 		}
 	}
 }

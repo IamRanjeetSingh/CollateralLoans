@@ -1,0 +1,147 @@
+﻿<form asp-action="test" asp-controller="loan" method="post" onsubmit="return validate();">
+	<div id="loan">
+		<h3>Loan Details</h3>
+		<div>
+			<label for="loan_id" class="col-form-label">Id</label>
+			<input type="text" name="loan_id" class="form-control" required pattern="^[0-9]+$" />
+		</div>
+		<div>
+			<label for="loan_customerid" class="col-form-label">Customer Id</label>
+			<input type="text" name="loan_customerId" class="form-control" required pattern="^[0-9]+$" />
+		</div>
+		<div>
+			<label for="loan_type" class="col-form-label">Type</label>
+			<select name="loan_type" class="custom-select" required>
+				<option value="RealEstate">RealEstate</option>
+				<option value="Land">Land</option>
+			</select>
+		</div>
+		<div>
+			<label for="loan_principal" class="col-form-label">Principal</label>
+			<input type="text" name="loan_principal" class="form-control" required pattern="^[0-9.]+$" />
+		</div>
+		<div>
+			<label for="loan_interest" class="col-form-label">Interest</label>
+			<input type="text" name="loan_interest" class="form-control" required pattern="^[0-9.]+$" />
+		</div>
+		<div>
+			<label for="loan_emi" class="col-form-label">Emi</label>
+			<input type="text" name="loan_emi" class="form-control" required pattern="^[0-9.]+$" />
+		</div>
+		<div>
+			<label for="loan_sanctionDate" class="col-form-label">Sanction Date</label>
+			<input type="date" name="loan_sanctionDate" class="form-control" required />
+		</div>
+		<div>
+			<label for="loan_maturityDate" class="col-form-label">Maturity Date</label>
+			<input type="date" name="loan_maturityDate" class="form-control" required />
+		</div>
+	</div>
+	<div id="collaterals">
+		<h3>Collateral Details</h3>
+		<div id="collateral_basic">
+			<h4>Basic</h4>
+			<div>
+				<label for="collateral_id" class="col-form-label">Id</label>
+				<input type="text" name="collateral_id" class="form-control" required pattern="^[0-9.]+$" />
+			</div>
+			<div>
+				<label for="collateral_type" class="col-form-label">Type</label>
+				<select id="collateral_type" name="collateral_type" class="custom-select" required>
+					<option value="Land">Land</option>
+					<option value="RealEstate">RealEstate</option>
+				</select>
+			</div>
+			<div>
+				<label for="collateral_initialAssessDate" class="col-form-label">Initial Assess Date</label>
+				<input type="date" name="collateral_initialAssessDate" class="form-control" required />
+			</div>
+			<div>
+				<label for="collateral_lastAssessDate" class="col-form-label">Last Assess Date</label>
+				<input type="date" name="collateral_lastAssessDate" class="form-control" required />
+			</div>
+		</div>
+		<div id="collateral_additional">
+			<div id="collateral_land" class="collateral_type_additional">
+				<h4>Land Additional</h4>
+				<div>
+					<label for="collateral_land_areaInSqFt" class="col-form-label">Area in Sq Ft</label>
+					<input type="text" name="collateral_land_areaInSqFt" class="form-control collateral_land_additional" required pattern="^[0-9.]+$" />
+				</div>
+				<div>
+					<label for="collateral_land_initialPricePerSqFt" class="col-form-label">Initial Price Per Sq Ft</label>
+					<input type="text" name="collateral_land_initialPricePerSqFt" class="form-control collateral_land_additional" required pattern="^[0-9.]+$" />
+				</div>
+				<div>
+					<label for="collateral_land_currentPricePerSqFt" class="col-form-label">Current Price Per Sq Ft</label>
+					<input type="text" name="collateral_land_currentPricePerSqFt" class="form-control collateral_land_additional" required pattern="^[0-9.]+$" />
+				</div>
+			</div>
+			<div id="collateral_realEstate" class="collateral_type_additional d-none">
+				<h4>RealEstate Additional</h4>
+				<div>
+					<label for="collateral_realEstate_areaInSqFt" class="col-form-label">Area in Sq Ft</label>
+					<input type="text" name="collateral_realEstate_areaInSqFt" class="form-control collateral_realEstate_additional" pattern="^[0-9.]+$" />
+				</div>
+				<div>
+					<label for="collateral_realEstate_initialLandPricePerSqFt" class="col-form-label">Initial Land Price Per Sq Ft</label>
+					<input type="text" name="collateral_realEstate_initialLandPricePerSqFt" class="form-control collateral_realEstate_additional" pattern="^[0-9.]+$" />
+				</div>
+				<div>
+					<label for="collateral_realEstate_currentLandPricePerSqFt" class="col-form-label">Current Land Price Per Sq Ft</label>
+					<input type="text" name="collateral_realEstate_currentLandPricePerSqFt" class="form-control collateral_realEstate_additional" pattern="^[0-9.]+$" />
+				</div>
+				<div>
+					<label for="collateral_realEstate_yearBuilt" class="col-form-label">Year Built</label>
+					<input id="collateral_realEstate_yearBuilt" type="text" name="collateral_realEstate_yearBuilt" class="form-control collateral_realEstate_additional" pattern="^[0-9]+$" min="1200" max="1200" />
+				</div>
+				<div>
+					<label for="collateral_realEstate_initialStructurePrice" class="col-form-label">Initial Structure Price</label>
+					<input type="text" name="collateral_realEstate_initialStructurePrice" class="form-control collateral_realEstate_additional" pattern="^[0-9.]+$" />
+				</div>
+				<div>
+					<label for="collateral_realEstate_currentStructurePrice" class="col-form-label">Current Structure Price</label>
+					<input type="text" name="collateral_realEstate_currentStructurePrice" class="form-control collateral_realEstate_additional" pattern="^[0-9.]+$" />
+				</div>
+			</div>
+		</div>
+	</div>
+	<div>
+		<input type="submit" value="submit" class="btn btn-primary" />
+	</div>
+</form>
+
+@section Scripts {
+<script>
+	$(document).ready(function () {
+		setMaxBuiltYearForRealEstate();
+
+		$('#collateral_type').change(function () {
+			let collateralType = $('#collateral_type').val();
+			if (collateralType === 'Land') {
+				$("#collateral_realEstate.collateral_type_additional").removeClass("d-block");
+				$("#collateral_realEstate.collateral_type_additional").addClass("d-none");
+
+				$("#collateral_land.collateral_type_additional").removeClass("d-none");
+				$("#collateral_land.collateral_type_additional").addClass("d-block");
+
+				$(".collateral_land_additional").attr("required", true);
+				$(".collateral_realEstate_additional").attr("required", false);
+			}
+			else if (collateralType === 'RealEstate') {
+				$("#collateral_land.collateral_type_additional").removeClass("d-block");
+				$("#collateral_land.collateral_type_additional").addClass("d-none");
+
+				$("#collateral_realEstate.collateral_type_additional").removeClass("d-none");
+				$("#collateral_realEstate.collateral_type_additional").addClass("d-block");
+
+				$(".collateral_realEstate_additional").attr("required", true);
+				$(".collateral_land_additional").attr("required", false);
+			}
+		})
+	});
+	function setMaxBuiltYearForRealEstate() {
+		$("#collateral_realEstate_yearBuilt").attr("max", new Date().getFullYear());
+	}
+</script>
+}

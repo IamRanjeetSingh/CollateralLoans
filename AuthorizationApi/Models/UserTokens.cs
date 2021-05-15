@@ -8,6 +8,6 @@ namespace AuthorizationApi.Models
 	public class UserTokens
 	{
 		public string UserId { get; set; }
-		public string RefreshToken { get; set; }
+		public string LastRefreshToken { get; set; }
 	}
 }

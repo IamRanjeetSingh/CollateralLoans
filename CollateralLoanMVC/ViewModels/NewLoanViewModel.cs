@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace CollateralLoanMVC.ViewModels
 {
-	public class LoanViewModel
+	public class NewLoanViewModel
 	{
 		public Loan Loan { get; set; }
-		public Risk Risk { get; set; }
+		public Collateral Collateral { get; set; }
 	}
 }

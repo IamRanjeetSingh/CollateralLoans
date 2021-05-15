@@ -70,15 +70,22 @@ namespace CollateralManagementApi.Controllers
 			for(int index = 0, length = collateralsJson.GetArrayLength(); index < length; index++)
 			{
 				JsonElement collateralJson = collateralsJson[index];
+
+				_logger.LogInformation(collateralJson.GetRawText());
+
 				Collateral collateral = null;
 				
-				try { collateral = CollateralSerializer.DeserializeByType(collateralJson, "type"); }
-				catch(ArgumentException) { statusCodes.Add((int)HttpStatusCode.BadRequest); }
+				try { collateral = CollateralSerializer.DeserializeByType(collateralJson, "Type"); }
+				catch(ArgumentException e) {
+					_logger.LogInformation("ArgumentException: " + e.Message);
+					statusCodes.Add((int)HttpStatusCode.BadRequest);
+					continue;
+				}
 
 				_dao.Save(collateral, db);
 				statusCodes.Add((int)HttpStatusCode.Created);
 			}
-
+			_logger.LogInformation(JsonSerializer.Serialize(new { statuses = statusCodes }));
 			return StatusCode((int)HttpStatusCode.MultiStatus, new { statuses = statusCodes });
 		}
 

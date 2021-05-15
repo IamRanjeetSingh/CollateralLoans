@@ -110,5 +110,44 @@ namespace CollateralLoanMVC.Services
 				return response.StatusCode == HttpStatusCode.Created;
 			}
 		}
+
+		public async Task<string> SaveWithCollaterals(JsonElement loan, JsonElement collaterals)
+		{
+			using(HttpClient client = _httpClientFactory.CreateClient())
+			{
+				HttpRequestMessage request = new HttpRequestMessage()
+				{
+					Method = HttpMethod.Post,
+					RequestUri = new Uri($"{_loanApiBaseUrl}/api/loan/savewithcollaterals"),
+					Content = new StringContent(JsonSerializer.Serialize(new { loan = loan, collaterals = collaterals }), Encoding.UTF8, "application/json")
+				};
+				HttpResponseMessage response = await client.SendAsync(request);
+
+				if (response.StatusCode != HttpStatusCode.OK) throw new UnexpectedResponseException($"LoanManagementApi response statusCode: {response.StatusCode}");
+
+				return await response.Content.ReadAsStringAsync();
+
+				//JsonElement responseBody = JsonDocument.Parse(await response.Content.ReadAsStringAsync()).RootElement;
+				//if (
+				//	!responseBody.TryGetProperty("loanSaveStatus", out JsonElement loanSaveStatus) || 
+				//	!responseBody.TryGetProperty("collateralSaveStatuses", out JsonElement collateralSaveStatuses) ||
+				//	loanSaveStatus.ValueKind != JsonValueKind.Number || 
+				//	collateralSaveStatuses.ValueKind != JsonValueKind.Array)
+				//	throw new UnexpectedResponseException($"unexpected response from LoanManagementApi: {responseBody.GetRawText()}");
+
+				//bool result = true;
+				//for(int index = 0; index < collateralSaveStatuses.GetArrayLength(); index++)
+				//{
+				//	JsonElement collateralSaveStatus = collateralSaveStatuses[index];
+				//	if(collateralSaveStatus.ValueKind != JsonValueKind.Number || collateralSaveStatus.GetInt32() != (int)HttpStatusCode.OK)
+				//	{
+				//		result = false;
+				//		break;
+				//	}
+				//}
+
+				//return result && loanSaveStatus.GetInt32() == (int)HttpStatusCode.OK;
+			}
+		}
 	}
 }

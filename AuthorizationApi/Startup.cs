@@ -52,7 +52,7 @@ namespace AuthorizationApi
 			int accessTokenExpiresIn = Configuration.GetValue<int>("TokenConfig:AccessTokenExpiresIn");
 			int refreshTokenExpiresIn = Configuration.GetValue<int>("TokenConfig:RefreshTokenExpiresIn");
 			services.AddScoped<IAccessTokenFactory>(serviceProvider => new AccessTokenFactory(securityParams, accessTokenExpiresIn, serviceProvider.GetService<IUserTokensDao>()));
-			services.AddScoped<IRefreshTokenFactory>(serviceProvider => new RefreshTokenFactory(serviceProvider.GetService<ILogger<RefreshTokenFactory>>(), securityParams, refreshTokenExpiresIn, serviceProvider.GetService<IUserTokensDao>()));
+			services.AddScoped<IRefreshTokenFactory>(serviceProvider => new RefreshTokenFactory(securityParams, refreshTokenExpiresIn, serviceProvider.GetService<IUserTokensDao>()));
 
 			services.AddSwaggerGen();
 		}

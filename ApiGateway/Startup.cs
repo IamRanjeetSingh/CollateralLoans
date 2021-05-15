@@ -28,12 +28,13 @@ namespace ApiGateway
 
 			services.AddHttpClient();
 
-			services.AddAuthentication(TokenAuthenticationHandler.TokenAuthenticationScheme)
+			//ApiGateway
+			services
+				.AddAuthentication(TokenAuthenticationHandler.TokenAuthenticationScheme)
 				.AddScheme<TokenAuthenticationHandlerOptions, TokenAuthenticationHandler>(
-					TokenAuthenticationHandler.TokenAuthenticationScheme, 
-					options => {
-						options.TokenValidationUrl = Configuration.GetValue<string>("TokenValidationUrl");
-					});
+					TokenAuthenticationHandler.TokenAuthenticationScheme,
+					options => options.Authority = Configuration.GetValue<string>("TokenValidationUrl")
+				);
 		}
 
 		public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -45,9 +46,9 @@ namespace ApiGateway
 
 			app.UseRouting();
 
-			app.UseAuthentication();
+			//app.UseAuthentication();
 
-			app.UseAuthorization();
+			//app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
 			{
