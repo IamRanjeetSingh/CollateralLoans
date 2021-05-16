@@ -23,7 +23,6 @@ C:\Users\Dell\Visual Studio Workplace\CollateralLoans\CollateralLoanMVC\obj\Debu
 C:\Users\Dell\Visual Studio Workplace\CollateralLoans\CollateralLoanMVC\obj\Debug\net5.0\CollateralLoanMVC.TagHelpers.input.cache
 C:\Users\Dell\Visual Studio Workplace\CollateralLoans\CollateralLoanMVC\obj\Debug\net5.0\CollateralLoanMVC.TagHelpers.output.cache
 C:\Users\Dell\Visual Studio Workplace\CollateralLoans\CollateralLoanMVC\obj\Debug\net5.0\CollateralLoanMVC.RazorCoreGenerate.cache
-C:\Users\Dell\Visual Studio Workplace\CollateralLoans\CollateralLoanMVC\obj\Debug\net5.0\Razor\Views\Loan\View.cshtml.g.cs
 C:\Users\Dell\Visual Studio Workplace\CollateralLoans\CollateralLoanMVC\obj\Debug\net5.0\Razor\Views\Shared\Error.cshtml.g.cs
 C:\Users\Dell\Visual Studio Workplace\CollateralLoans\CollateralLoanMVC\obj\Debug\net5.0\Razor\Views\Shared\_Layout.cshtml.g.cs
 C:\Users\Dell\Visual Studio Workplace\CollateralLoans\CollateralLoanMVC\obj\Debug\net5.0\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
@@ -45,3 +44,8 @@ C:\Users\Dell\Visual Studio Workplace\CollateralLoans\CollateralLoanMVC\obj\Debu
 C:\Users\Dell\Visual Studio Workplace\CollateralLoans\CollateralLoanMVC\obj\Debug\net5.0\Razor\Views\Loan\View2.cshtml.g.cs
 C:\Users\Dell\Visual Studio Workplace\CollateralLoans\CollateralLoanMVC\obj\Debug\net5.0\Razor\Views\Account\Login.cshtml.g.cs
 C:\Users\Dell\Visual Studio Workplace\CollateralLoans\CollateralLoanMVC\obj\Debug\net5.0\Razor\Views\Account\Signup.cshtml.g.cs
+C:\Users\Dell\Visual Studio Workplace\CollateralLoans\CollateralLoanMVC\obj\Debug\net5.0\Razor\Views\Home\View.cshtml.g.cs
+C:\Users\Dell\Visual Studio Workplace\CollateralLoans\CollateralLoanMVC\obj\Debug\net5.0\Razor\Views\Shared\LandView.cshtml.g.cs
+C:\Users\Dell\Visual Studio Workplace\CollateralLoans\CollateralLoanMVC\obj\Debug\net5.0\Razor\Views\Shared\RealEstateView.cshtml.g.cs
+C:\Users\Dell\Visual Studio Workplace\CollateralLoans\CollateralLoanMVC\obj\Debug\net5.0\Razor\Views\Loan\ViewCollateral.cshtml.g.cs
+C:\Users\Dell\Visual Studio Workplace\CollateralLoans\CollateralLoanMVC\obj\Debug\net5.0\Razor\Views\Loan\ViewLoan.cshtml.g.cs

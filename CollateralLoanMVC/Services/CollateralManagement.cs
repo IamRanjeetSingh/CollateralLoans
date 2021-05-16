@@ -91,7 +91,7 @@ namespace CollateralLoanMVC.Services
 			}
 		}
 
-		public async Task<Collateral> GetCollateral(int collateralId)
+		public async Task<JsonElement> GetCollateral(int collateralId)
 		{
 			if (collateralId <= 0)
 				throw new ArgumentException("collateralId <= 0");
@@ -122,13 +122,17 @@ namespace CollateralLoanMVC.Services
 				if (type.ValueKind != JsonValueKind.String)
 					throw new UnexpectedResponseException("type property is not of type json string");
 
-				JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-				if (type.GetString().ToLower() == nameof(Land).ToLower())
-					return JsonSerializer.Deserialize<Land>(collateralJson.GetRawText(), jsonSerializerOptions);
-				else if (type.GetString().ToLower() == nameof(RealEstate).ToLower())
-					return JsonSerializer.Deserialize<RealEstate>(collateralJson.GetRawText(), jsonSerializerOptions);
-				else
-					throw new UnexpectedResponseException($"type: {type.GetString().ToLower()} is unknown");
+				_logger.LogInformation(collateralJson.GetRawText());
+
+				return collateralJson;
+
+				//JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+				//if (type.GetString().ToLower() == nameof(Land).ToLower())
+				//	return JsonSerializer.Deserialize<Land>(collateralJson.GetRawText(), jsonSerializerOptions);
+				//else if (type.GetString().ToLower() == nameof(RealEstate).ToLower())
+				//	return JsonSerializer.Deserialize<RealEstate>(collateralJson.GetRawText(), jsonSerializerOptions);
+				//else
+				//	throw new UnexpectedResponseException($"type: {type.GetString().ToLower()} is unknown");
 			}
 		}
 	}

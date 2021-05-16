@@ -53,8 +53,8 @@ namespace CollateralLoanMVC.Util
 					InitialAssesDate = DateTime.Parse(form[$"{nameof(Collateral)}_{nameof(Collateral.InitialAssesDate)}"]),
 					LastAssessDate = DateTime.Parse(form[$"{nameof(Collateral)}_{nameof(Collateral.LastAssessDate)}"]),
 					AreaInSqFt = double.Parse(form[$"{nameof(Collateral)}_{nameof(RealEstate)}_{nameof(RealEstate.AreaInSqFt)}"]),
-					InitialLandPricePerSqFt = double.Parse(form[$"{nameof(Collateral)}_{nameof(RealEstate)}_{nameof(RealEstate.InitialLandPricePerSqFt)}"]),
-					CurrentLandPricePerSqFt = double.Parse(form[$"{nameof(Collateral)}_{nameof(RealEstate)}_{nameof(RealEstate.CurrentLandPricePerSqFt)}"]),
+					InitialLandPriceInSqFt = double.Parse(form[$"{nameof(Collateral)}_{nameof(RealEstate)}_{nameof(RealEstate.InitialLandPriceInSqFt)}"]),
+					CurrentLandPriceInSqFt = double.Parse(form[$"{nameof(Collateral)}_{nameof(RealEstate)}_{nameof(RealEstate.CurrentLandPriceInSqFt)}"]),
 					YearBuilt = int.Parse(form[$"{nameof(Collateral)}_{nameof(RealEstate)}_{nameof(RealEstate.YearBuilt)}"]),
 					InitialStructurePrice = double.Parse(form[$"{nameof(Collateral)}_{nameof(RealEstate)}_{nameof(RealEstate.InitialStructurePrice)}"]),
 					CurrentStructurePrice = double.Parse(form[$"{nameof(Collateral)}_{nameof(RealEstate)}_{nameof(RealEstate.CurrentStructurePrice)}"])
@@ -104,8 +104,8 @@ namespace CollateralLoanMVC.Util
 					InitialAssesDate = DateTime.Parse(form[$"{nameof(Collateral)}_{nameof(Collateral.InitialAssesDate)}"]),
 					LastAssessDate = DateTime.Parse(form[$"{nameof(Collateral)}_{nameof(Collateral.LastAssessDate)}"]),
 					AreaInSqFt = double.Parse(form[$"{nameof(Collateral)}_{nameof(RealEstate)}_{nameof(RealEstate.AreaInSqFt)}"]),
-					InitialLandPricePerSqFt = double.Parse(form[$"{nameof(Collateral)}_{nameof(RealEstate)}_{nameof(RealEstate.InitialLandPricePerSqFt)}"]),
-					CurrentLandPricePerSqFt = double.Parse(form[$"{nameof(Collateral)}_{nameof(RealEstate)}_{nameof(RealEstate.CurrentLandPricePerSqFt)}"]),
+					InitialLandPriceInSqFt = double.Parse(form[$"{nameof(Collateral)}_{nameof(RealEstate)}_{nameof(RealEstate.InitialLandPriceInSqFt)}"]),
+					CurrentLandPriceInSqFt = double.Parse(form[$"{nameof(Collateral)}_{nameof(RealEstate)}_{nameof(RealEstate.CurrentLandPriceInSqFt)}"]),
 					YearBuilt = int.Parse(form[$"{nameof(Collateral)}_{nameof(RealEstate)}_{nameof(RealEstate.YearBuilt)}"]),
 					InitialStructurePrice = double.Parse(form[$"{nameof(Collateral)}_{nameof(RealEstate)}_{nameof(RealEstate.InitialStructurePrice)}"]),
 					CurrentStructurePrice = double.Parse(form[$"{nameof(Collateral)}_{nameof(RealEstate)}_{nameof(RealEstate.CurrentStructurePrice)}"])

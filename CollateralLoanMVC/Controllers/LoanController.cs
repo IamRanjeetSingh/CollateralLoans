@@ -3,6 +3,7 @@ using CollateralLoanMVC.Models;
 using CollateralLoanMVC.Services;
 using CollateralLoanMVC.Util;
 using CollateralLoanMVC.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace CollateralLoanMVC.Controllers
 {
+	[Authorize]
 	[Route("[controller]")]
 	public class LoanController : Controller
 	{
@@ -38,7 +40,6 @@ namespace CollateralLoanMVC.Controllers
 			_logger = logger;
 		}
 
-		//TODO: check integration
 		/// <summary>
 		/// Get the page for creating a new loan instance. 
 		/// </summary>
@@ -48,10 +49,33 @@ namespace CollateralLoanMVC.Controllers
 		{
 			ViewBag.LoanTypes = new string[] { "Home", "Car" };
 			ViewBag.CollateralTypes = new string[] { "RealEstate", "Land" };
-			return View();
+			return View("New");
 		}
 
 		//TODO: add post action method for creating new loan
+		[HttpPost("[action]")]
+		public async Task<IActionResult> New(IFormCollection form, [FromServices] ILoanManagement loanManagement)
+		{
+			JsonElement loanJson = JsonDocument.Parse(FormReader.GetLoanJson(form)).RootElement;
+			JsonElement collateralsJson = JsonDocument.Parse($"[{FormReader.GetCollateralJson(form, _logger)}]").RootElement;
+
+			_logger.LogInformation(collateralsJson.GetRawText());
+
+			try
+			{
+				//return Ok(await loanManagement.SaveWithCollaterals(loanJson, collateralsJson));
+				if (await loanManagement.SaveWithCollaterals(loanJson, collateralsJson))
+				{
+					int newLoanId = FormReader.GetLoan(form).Id;
+					return RedirectToAction(actionName: nameof(LoanController.ViewLoan), new { id = newLoanId });
+				}
+				//return Ok("loan and collaterals saved successfully");
+				else
+					return StatusCode((int)HttpStatusCode.InternalServerError, new { error = "error occurred while saving loan and collaterals" });
+			}
+			catch (HttpRequestException) { return StatusCode((int)HttpStatusCode.ServiceUnavailable, new { error = "cannot connect with LoanManagementApi" }); }
+			catch (UnexpectedResponseException e) { return StatusCode((int)HttpStatusCode.InternalServerError, new { error = e.Message }); }
+		}
 
 		/// <summary>
 		/// Get a page for viewing an individual loan in more detailed manner.
@@ -59,7 +83,7 @@ namespace CollateralLoanMVC.Controllers
 		/// <param name="loanId">id of the loan to be viewed</param>
 		/// <returns>page for viewing an individual loan</returns>
 		[HttpGet("{id}")]
-		public async Task<ActionResult> View(int id)
+		public async Task<ActionResult> ViewLoan(int id)
 		{
 			Task<Loan> loanTask = _loanManagement.Get(id);
 			Task<Risk> riskTask = _riskAssessment.Get(id);
@@ -84,7 +108,7 @@ namespace CollateralLoanMVC.Controllers
 			if (loan == null)
 				return NotFound();
 
-			return View("View2",
+			return View("ViewLoan",
 				new ViewLoanViewModel()
 				{
 					Loan = loan,
@@ -92,6 +116,33 @@ namespace CollateralLoanMVC.Controllers
 					Collateral = collateral
 				}
 			);
+		}
+
+		[HttpGet("[action]/{id}")]
+		public async Task<ActionResult> ViewCollateral(int id)
+		{
+			var collateralJson = await _collateralManagement.GetCollateral(id);
+			_logger.LogInformation(collateralJson.GetRawText());
+
+			JsonElement type;
+			if (!collateralJson.TryGetProperty(nameof(Models.Collateral.Type).Trim(), out type) && !collateralJson.TryGetProperty(nameof(Models.Collateral.Type).ToLower().Trim(), out type))
+				throw new UnexpectedResponseException("no type property found");
+
+			string collateralType = type.GetString();
+
+			JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+			if (collateralType.ToLower() == nameof(Land).ToLower())
+			{
+				Land land = JsonSerializer.Deserialize<Land>(collateralJson.GetRawText(), jsonSerializerOptions);
+				return View("ViewCollateral", new ViewCollateralViewModel { Land = land });
+				//return Ok(new { collateral = land });
+			}
+			else
+			{
+				RealEstate realEstate = JsonSerializer.Deserialize<RealEstate>(collateralJson.GetRawText(), jsonSerializerOptions);
+				return View("ViewCollateral", new ViewCollateralViewModel { RealEstate = realEstate });
+				//return Ok(new { collateral = realEstate });
+			}
 		}
 
 		/// <summary>
@@ -130,7 +181,7 @@ namespace CollateralLoanMVC.Controllers
 				if (await loanManagement.SaveWithCollaterals(loanJson, collateralsJson))
 				{
 					int newLoanId = FormReader.GetLoan(form).Id;
-					return RedirectToAction(actionName: nameof(LoanController.View), new { id = newLoanId });
+					return RedirectToAction(actionName: nameof(LoanController.ViewLoan), new { id = newLoanId });
 				}
 				//return Ok("loan and collaterals saved successfully");
 				else
@@ -141,33 +192,3 @@ namespace CollateralLoanMVC.Controllers
 		}
 	}
 }
-
-
-//[HttpGet("{id}")]
-//public async Task<ActionResult> View(int id)
-//{
-//	Task<Loan> loanTask = _loanManagement.Get(id);
-//	Task<Risk> riskTask = _riskAssessment.Get(id);
-
-//	Loan loan;
-//	Risk risk;
-
-//	try { loan = await loanTask; }
-//	catch (HttpRequestException) { return StatusCode((int)HttpStatusCode.ServiceUnavailable, new { error = "unable to connect with LoanManagementApi" }); }
-//	catch (UnexpectedResponseException) { return StatusCode((int)HttpStatusCode.InternalServerError, new { error = "something went wrong in LoanManagementApi" }); }
-
-//	try { risk = await riskTask; }
-//	catch (HttpRequestException) { return StatusCode((int)HttpStatusCode.ServiceUnavailable, new { error = "unable to connect with RiskAssessmentApi" }); }
-//	catch (UnexpectedResponseException) { return StatusCode((int)HttpStatusCode.InternalServerError, new { error = "something went wrong in RiskAssessmentApi" }); }
-
-//	if (loan == null)
-//		return NotFound();
-
-//	return View("View",
-//		new ViewLoanViewModel()
-//		{
-//			Loan = loan,
-//			Risk = risk
-//		}
-//	);
-//}

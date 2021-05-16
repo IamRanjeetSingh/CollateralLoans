@@ -1,0 +1,11 @@
+﻿@model CollateralLoanMVC.ViewModels.ViewCollateralViewModel
+
+@if (@Model.Land != null)
+{
+	@await Html.PartialAsync("LandView")
+}
+else
+{
+	@await Html.PartialAsync("RealEstateView")
+}
+@*@System.Text.Json.JsonSerializer.Serialize(Model)*@

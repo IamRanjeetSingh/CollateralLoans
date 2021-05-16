@@ -28,6 +28,9 @@ namespace RiskAssessmentApi.Services
 
 		public async Task<Risk> EvaluateAsync(int loanId)
 		{
+			if (loanId <= 0)
+				throw new ArgumentException("loan id is less than or equal to 0");
+
 			Task<Loan> loanTask = _loanManagement.GetAsync(loanId);
 			Task<List<Collateral>> collateralsTask = _collateralManagement.GetByLoanIdAsync(loanId);
 

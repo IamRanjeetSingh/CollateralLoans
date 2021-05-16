@@ -17,7 +17,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthorizationApi", "Authori
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiGateway", "ApiGateway\ApiGateway.csproj", "{6FF2EABD-1FA9-40F8-B60E-5FBE89DB58AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollateralManagementApiTests", "CollateralManagementApiTests\CollateralManagementApiTests.csproj", "{21795124-0480-40BC-8B38-CBD791CABC34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CollateralManagementApiTests", "CollateralManagementApiTests\CollateralManagementApiTests.csproj", "{21795124-0480-40BC-8B38-CBD791CABC34}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizationApiTests", "AuthorizationApiTests\AuthorizationApiTests.csproj", "{1B597A90-84C5-4318-8D91-57E75700FC68}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanManagementApiTests", "LoanManagementApiTests\LoanManagementApiTests.csproj", "{59BB3790-15C8-45BC-AD00-B063289B573E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiskAssessmentApiTests", "RiskAssessmentApiTests\RiskAssessmentApiTests.csproj", "{CA3BA41F-EF0B-40A1-9EFD-230F3E5E620A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +63,18 @@ Global
 		{21795124-0480-40BC-8B38-CBD791CABC34}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21795124-0480-40BC-8B38-CBD791CABC34}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21795124-0480-40BC-8B38-CBD791CABC34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B597A90-84C5-4318-8D91-57E75700FC68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B597A90-84C5-4318-8D91-57E75700FC68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B597A90-84C5-4318-8D91-57E75700FC68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B597A90-84C5-4318-8D91-57E75700FC68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59BB3790-15C8-45BC-AD00-B063289B573E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59BB3790-15C8-45BC-AD00-B063289B573E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59BB3790-15C8-45BC-AD00-B063289B573E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59BB3790-15C8-45BC-AD00-B063289B573E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA3BA41F-EF0B-40A1-9EFD-230F3E5E620A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA3BA41F-EF0B-40A1-9EFD-230F3E5E620A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA3BA41F-EF0B-40A1-9EFD-230F3E5E620A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA3BA41F-EF0B-40A1-9EFD-230F3E5E620A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

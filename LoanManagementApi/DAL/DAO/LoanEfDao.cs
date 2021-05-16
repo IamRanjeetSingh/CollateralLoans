@@ -70,15 +70,20 @@ namespace LoanManagementApi.DAL.DAO
 
 		public Loan GetById(int id, LoanDb db)
 		{
-			if (db == null) throw new ArgumentNullException($"{typeof(LoanDb).FullName} parameter shouldn't be null");
+			if (id <= 0)
+				throw new ArgumentException($"id less than or equal to 0");
+			if (db == null) 
+				throw new ArgumentNullException($"{typeof(LoanDb).FullName} parameter shouldn't be null");
 
 			return db.Loans.SingleOrDefault(l => l.Id == id);
 		}
 
 		public int Save(Loan loan, LoanDb db)
 		{
-			if (IsDbContextNull(db) || IsLoanNull(loan))
-				return 0;
+			if (loan == null || db == null)
+				throw new ArgumentNullException($"{(loan == null ? "loan is null. " : "")}{(db == null ? "db is null. " : "")}");
+			//if (IsDbContextNull(db) || IsLoanNull(loan))
+			//	return 0;
 
 			db.Loans.Add(loan);
 			try
@@ -88,7 +93,8 @@ namespace LoanManagementApi.DAL.DAO
 			}
 			catch (Exception e)
 			{
-				_logger.LogError(e, $"Error occurred while saving customer{(_logSensitiveData ? JsonConvert.SerializeObject(loan) : "")}");
+				if(_logger != null)
+					_logger.LogError(e, $"Error occurred while saving customer{(_logSensitiveData ? JsonConvert.SerializeObject(loan) : "")}");
 				return 0;
 			}
 		}

@@ -24,7 +24,21 @@ namespace AuthorizationApi.Services
 			_logger.LogInformation(userId+" "+password);
 
 			//TODO: add actual user credentials validation logic
-			return await Task.FromResult(true);
+			//return await Task.FromResult(true);
+
+			if (userId.ToLower().Trim() == "ranjeet" && password.ToLower().Trim() == "password")
+				return await Task.FromResult(true);
+			else if (userId.ToLower().Trim() == "mirazul" && password.ToLower().Trim() == "password")
+				return await Task.FromResult(true);
+			else if (userId.ToLower().Trim() == "anushree" && password.ToLower().Trim() == "password")
+				return await Task.FromResult(true);
+			else if (userId.ToLower().Trim() == "harika" && password.ToLower().Trim() == "password")
+				return await Task.FromResult(true);
+			else if (userId.ToLower().Trim() == "sai" && password.ToLower().Trim() == "password")
+				return await Task.FromResult(true);
+			else
+				return await Task.FromResult(false);
+
 			//return await Task.FromResult(userId.ToLower().Trim() == "ranjeet" && password.ToLower().Trim() == "password");
 		}
 	}

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace CollateralLoanMVC.Services
@@ -10,6 +11,6 @@ namespace CollateralLoanMVC.Services
 	{
 		Task<List<Collateral>> GetByLoanId(int loanId);
 
-		Task<Collateral> GetCollateral(int collateralId);
+		Task<JsonElement> GetCollateral(int collateralId);
 	}
 }

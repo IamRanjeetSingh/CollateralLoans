@@ -75,32 +75,6 @@
 			</div>
 		</div>
 	</div>
-	<hr />
-	<div id="@nameof(Collateral)" class="container-fluid px-0">
-		<h4>Collateral</h4>
-		<div class="px-3 bg-light border">
-			<div class="row py-3">
-				<div class="col-4">
-					<label for="@string.Concat(nameof(Collateral), "_", nameof(Collateral.Id))" class="">Collateral Id</label>
-					<input id="@string.Concat(nameof(Collateral), "_", nameof(Collateral.Id))" class="form-control" value="@Model.Collateral.Id" disabled />
-				</div>
-				<div class="col-4">
-					<label for="@string.Concat(nameof(Collateral), "_", nameof(Collateral.InitialAssesDate))" class="">Initial Asses Date</label>
-					<input id="@string.Concat(nameof(Collateral), "_", nameof(Collateral.InitialAssesDate))" class="form-control" value="@Model.Collateral.InitialAssesDate" disabled />
-				</div>
-			</div>
-			<div class="row py-3">
-				<div class="col-4">
-					<label for="@string.Concat(nameof(Collateral), "_", nameof(Collateral.LastAssessDate))" class="">Last Assess Date</label>
-					<input id="@string.Concat(nameof(Collateral), "_", nameof(Collateral.LastAssessDate))" class="form-control" value="@Model.Collateral.LastAssessDate" disabled />
-				</div>
-				<div class="col-4">
-					<label for="@string.Concat(nameof(Collateral), "_", nameof(Collateral.Type))" class="">Type</label>
-					<input id="@string.Concat(nameof(Collateral), "_", nameof(Collateral.Type))" class="form-control" value="@Model.Collateral.Type" disabled />
-				</div>
-			</div>
-		</div>
-	</div>
 </form>
 
 @section Scripts {

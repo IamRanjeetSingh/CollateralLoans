@@ -27,6 +27,9 @@ namespace AuthorizationApi.Services
 
 		public Token Generate(string userId)
 		{
+			if (userId == null) 
+				throw new ArgumentNullException("user id is null");
+
 			JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
 			DateTime expiresIn = DateTime.UtcNow.AddSeconds(_expiresIn);
 			SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor()

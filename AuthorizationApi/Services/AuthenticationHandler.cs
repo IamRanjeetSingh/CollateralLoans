@@ -27,14 +27,18 @@ namespace AuthorizationApi.Services
 
 		public async Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request)
 		{
-			if (request == null || string.IsNullOrEmpty(request.UserId) || string.IsNullOrEmpty(request.Password))
+			if (request == null)
+				throw new ArgumentNullException("request is null");
+			if (string.IsNullOrEmpty(request.UserId) || string.IsNullOrEmpty(request.Password))
 				throw new ArgumentException("invalid authentication request");
 
-			_logger.LogInformation(JsonSerializer.Serialize(request));
+			if(_logger != null)
+				_logger.LogInformation(JsonSerializer.Serialize(request));
 
 			bool validationResult = await _userManager.ValidateCredentials(request.UserId, request.Password);
 
-			_logger.LogInformation("credentials validation result: "+validationResult);
+			if (_logger != null)
+				_logger.LogInformation("credentials validation result: "+validationResult);
 
 			if (!validationResult)
 			{

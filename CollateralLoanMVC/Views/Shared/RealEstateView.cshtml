@@ -1,0 +1,57 @@
+﻿@model CollateralLoanMVC.ViewModels.ViewCollateralViewModel
+
+<div id="@nameof(Collateral)" class="container-fluid px-0">
+	<h4>Collateral</h4>
+	<div class="px-3 bg-light border">
+		<div class="row py-3">
+			<div class="col-4">
+				<label for="@string.Concat(nameof(Collateral), "_", nameof(Collateral.Id))" class="">Collateral Id</label>
+				<input id="@string.Concat(nameof(Collateral), "_", nameof(Collateral.Id))" class="form-control" value="@Model.RealEstate.Id" disabled />
+			</div>
+			<div class="col-4">
+				<label for="@string.Concat(nameof(Collateral), "_", nameof(Collateral.Type))" class="">Type</label>
+				<input id="@string.Concat(nameof(Collateral), "_", nameof(Collateral.Type))" class="form-control" value="@Model.RealEstate.Type" disabled />
+			</div>
+		</div>
+		<div class="row py-3">
+			<div class="col-4">
+				<label for="@string.Concat(nameof(Collateral), "_", nameof(Collateral.InitialAssesDate))" class="">Initial Asses Date</label>
+				<input id="@string.Concat(nameof(Collateral), "_", nameof(Collateral.InitialAssesDate))" class="form-control" value="@Model.RealEstate.InitialAssesDate" disabled />
+			</div>
+			<div class="col-4">
+				<label for="@string.Concat(nameof(Collateral), "_", nameof(Collateral.LastAssessDate))" class="">Last Assess Date</label>
+				<input id="@string.Concat(nameof(Collateral), "_", nameof(Collateral.LastAssessDate))" class="form-control" value="@Model.RealEstate.LastAssessDate" disabled />
+			</div>
+		</div>
+		<div class="row py-3">
+			<div class="col-4">
+				<label for="@string.Concat(nameof(Collateral), "_", nameof(RealEstate), "_", nameof(RealEstate.InitialValue))" class="">Initial Value</label>
+				<input id="@string.Concat(nameof(Collateral), "_", nameof(RealEstate), "_", nameof(RealEstate.InitialValue))" class="form-control" value="@Model.RealEstate.InitialValue" disabled />
+			</div>
+			<div class="col-4">
+				<label for="@string.Concat(nameof(Collateral), "_", nameof(RealEstate), "_", nameof(RealEstate.CurrentValue))" class="">Current Value</label>
+				<input id="@string.Concat(nameof(Collateral), "_", nameof(RealEstate), "_", nameof(RealEstate.CurrentValue))" class="form-control" value="@Model.RealEstate.CurrentValue" disabled />
+			</div>
+		</div>
+		<div class="row py-3">
+			<div class="col-4">
+				<label for="@string.Concat(nameof(Collateral), "_", nameof(RealEstate), "_", nameof(RealEstate.InitialLandPriceInSqFt))" class="">Initial Land Price (per. sq. ft.)</label>
+				<input id="@string.Concat(nameof(Collateral), "_", nameof(RealEstate), "_", nameof(RealEstate.InitialLandPriceInSqFt))" class="form-control" value="@Model.RealEstate.InitialLandPriceInSqFt" disabled />
+			</div>
+			<div class="col-4">
+				<label for="@string.Concat(nameof(Collateral), "_", nameof(RealEstate), "_", nameof(RealEstate.CurrentLandPriceInSqFt))" class="">Current Land Price (per sq. ft.)</label>
+				<input id="@string.Concat(nameof(Collateral), "_", nameof(RealEstate), "_", nameof(RealEstate.CurrentLandPriceInSqFt))" class="form-control" value="@Model.RealEstate.CurrentLandPriceInSqFt" disabled />
+			</div>
+		</div>
+		<div class="row py-3">
+			<div class="col-4">
+				<label for="@string.Concat(nameof(Collateral), "_", nameof(RealEstate), "_", nameof(RealEstate.InitialStructurePrice))" class="">Initial Structure Price (per. sq. ft.)</label>
+				<input id="@string.Concat(nameof(Collateral), "_", nameof(RealEstate), "_", nameof(RealEstate.InitialStructurePrice))" class="form-control" value="@Model.RealEstate.InitialStructurePrice" disabled />
+			</div>
+			<div class="col-4">
+				<label for="@string.Concat(nameof(Collateral), "_", nameof(Land), "_", nameof(RealEstate.CurrentStructurePrice))" class="">Current Structure Price (per sq. ft.)</label>
+				<input id="@string.Concat(nameof(Collateral), "_", nameof(Land), "_", nameof(RealEstate.CurrentStructurePrice))" class="form-control" value="@Model.RealEstate.CurrentStructurePrice" disabled />
+			</div>
+		</div>
+	</div>
+</div>

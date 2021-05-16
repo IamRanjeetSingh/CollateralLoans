@@ -9,8 +9,8 @@ namespace CollateralLoanMVC.Models
 	{
 		public int YearBuilt { get; set; }
 		public double AreaInSqFt { get; set; }
-		public double InitialLandPricePerSqFt { get; set; }
-		public double CurrentLandPricePerSqFt { get; set; }
+		public double InitialLandPriceInSqFt { get; set; }
+		public double CurrentLandPriceInSqFt { get; set; }
 		public double InitialStructurePrice { get; set; }
 		public double CurrentStructurePrice { get; set; }
 
@@ -18,7 +18,7 @@ namespace CollateralLoanMVC.Models
 		{
 			get
 			{
-				return (AreaInSqFt * InitialLandPricePerSqFt) + InitialStructurePrice;
+				return (AreaInSqFt * InitialLandPriceInSqFt) + InitialStructurePrice;
 			}
 		}
 
@@ -26,7 +26,7 @@ namespace CollateralLoanMVC.Models
 		{
 			get
 			{
-				return (AreaInSqFt * CurrentLandPricePerSqFt) + CurrentStructurePrice;
+				return (AreaInSqFt * CurrentLandPriceInSqFt) + CurrentStructurePrice;
 			}
 		}
 
