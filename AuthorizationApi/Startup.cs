@@ -34,7 +34,6 @@ namespace AuthorizationApi
 			services.AddDbContext<TokenDb>(options =>
 			{
 				options.UseInMemoryDatabase("TokenDb");
-				//options.UseSqlServer("Server=DESKTOP-3CET6HL\\SQLEXPRESS;Database=TokenDb;Trusted_Connection=True;");
 			});
 
 			services.AddScoped<IAuthenticationHandler, AuthenticationHandler>();
