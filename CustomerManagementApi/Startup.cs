@@ -31,7 +31,6 @@ namespace CustomerManagementApi
 			services.AddDbContext<CustomerDb>(options =>
 			{
 				options.UseInMemoryDatabase("CustomerDb");
-				//options.UseSqlServer("Server=DESKTOP-3CET6HL\\SQLEXPRESS;Database=CustomerDb;Trusted_Connection=True;");
 			});
 			services.AddScoped<ICustomerDao>(serviceProvider =>
 				new CustomerEfDao(
