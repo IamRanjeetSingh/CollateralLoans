@@ -33,7 +33,6 @@ namespace LoanManagementApi
 			services.AddDbContext<LoanDb>(options =>
 			{
 				options.UseInMemoryDatabase("LoanDb");
-				//options.UseSqlServer("Server=DESKTOP-3CET6HL\\SQLEXPRESS;Database=LoanDb;Trusted_Connection=True;");
 			});
 
 			services.AddScoped<ILoanDao>(serviceProvider =>
