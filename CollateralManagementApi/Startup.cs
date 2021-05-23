@@ -29,7 +29,6 @@ namespace CollateralManagementApi
 			services.AddDbContext<CollateralDb>(options => 
 			{
 				options.UseInMemoryDatabase("CollateralDb");
-				//options.UseSqlServer("Server=DESKTOP-3CET6HL\\SQLEXPRESS;Database=CollateralDb;Trusted_Connection=True;");
 			});
 
 			services.AddScoped<ISubCollateralDao<Land>, LandEfDao>();
